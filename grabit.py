@@ -6,7 +6,6 @@
 #   "markdownify==0.14.1",
 #   "PyYAML==6.0.2",
 #   "requests==2.32.3",
-#   "text-unidecode==1.3",
 #   "mdformat==0.7.21",
 # ]
 # ///
@@ -26,9 +25,8 @@ from markdownify import ATX, UNDERSCORE, MarkdownConverter, abstract_inline_conv
 from mdformat import text as mdformat_text
 from readabilipy import simple_json_from_html_string
 from requests import RequestException
-from text_unidecode import unidecode
 
-VERSION = "0.7.1"
+VERSION = "0.7.2"
 
 
 class OutputFormat(Enum):
@@ -129,7 +127,6 @@ class BaseGrabber:
 
     def post_process_title(self, title: str, fallback_title: str):
         title = self.handle_missing_title(title, fallback_title)
-        title = unidecode(title)
 
         return title
 

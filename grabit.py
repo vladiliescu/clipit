@@ -209,7 +209,7 @@ class RedditGrabber(BaseGrabber):
             author = post_data.get("author", "[deleted]")
             score = post_data.get("score", 0)
 
-            markdown = f"**{author}** [{score} score]:\n> {selftext if selftext else post_url  }\n\n"
+            markdown = f"**{author}** [{score} score]:\n> {selftext if selftext else post_url}\n\n"
 
             # Extract comments
             comments_data = reddit_post_json[1]["data"]["children"]
@@ -458,7 +458,7 @@ def download_html_content(url, user_agent: str) -> str:
 
         response = requests.get(url, headers=request_headers)
         response.raise_for_status()
-        html_content = response.text
+        html_content = response.content.decode("utf-8")
     except RequestException as e:
         raise ClickException(f"Error downloading {url}: {e}")
     return html_content

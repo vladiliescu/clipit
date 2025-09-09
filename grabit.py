@@ -342,8 +342,24 @@ def output(title: str, outputs: dict[OutputFormat, str], url: str, output_flags:
 
 
 def sanitize_filename(filename):
-    sanitized = re.sub(r'[<>:"/\\|?*]', "_", filename)
-    sanitized = sanitized.lstrip(".")
+    # Remove Obsidian-specific characters
+    sanitized = re.sub(r"[#|\^\[\]]", "", filename)
+
+    # Most conservative approach - remove all problematic characters including control characters
+    sanitized = re.sub(r'[<>:"/\\|?*\x00-\x1F]', "", sanitized)
+
+    # Handle Windows reserved filenames
+    sanitized = re.sub(r"^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$", r"_\1\2", sanitized, flags=re.IGNORECASE)
+
+    # Remove trailing spaces and periods
+    sanitized = re.sub(r"[\s.]+$", "", sanitized)
+
+    # Remove leading periods
+    sanitized = re.sub(r"^\.+", "", sanitized)
+
+    # Trim to 240 characters to leave room for extensions
+    sanitized = sanitized[:240]
+
     return sanitized
 
 

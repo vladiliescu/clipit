@@ -6,8 +6,8 @@ from grabit import sanitize_filename
 @pytest.mark.parametrize(
     "input_filename, expected_output",
     [
-        ("invalid|file:name.txt", "invalid_file_name.txt"),
-        ("another/invalid\\name.txt", "another_invalid_name.txt"),
+        ("invalid|file:name.txt", "invalidfilename.txt"),
+        ("another/invalid\\name.txt", "anotherinvalidname.txt"),
         ("valid_name.txt", "valid_name.txt"),
     ],
 )

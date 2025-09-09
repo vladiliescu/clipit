@@ -81,7 +81,7 @@ class BaseGrabber:
         fallback_title: str,
         render_flags: RenderFlags,
         output_formats: list[OutputFormat],
-    ) -> (str, dict[OutputFormat, str]):
+    ) -> tuple[str, dict[OutputFormat, str]]:
         outputs = {}
 
         html_content = download_html_content(url, user_agent)
@@ -144,7 +144,7 @@ class RedditGrabber(BaseGrabber):
         fallback_title: str,
         render_flags: RenderFlags,
         output_formats: list[OutputFormat],
-    ) -> (str, dict[OutputFormat, str]):
+    ) -> tuple[str, dict[OutputFormat, str]]:
         if (
             should_output_raw_html(output_formats)
             or should_output_readable_html(output_formats)
@@ -307,7 +307,7 @@ def save(
     """
 
     grabber = next((g for g in grabbers if g.can_handle(url)), BaseGrabber())
-    output_formats = [OutputFormat(format_str) for format_str in output_formats]
+    output_format_enums = [OutputFormat(format_str) for format_str in output_formats]
 
     render_flags = RenderFlags(
         include_source=include_source,
@@ -315,16 +315,19 @@ def save(
         yaml_frontmatter=yaml_frontmatter,
     )
     output_flags = OutputFlags(
-        output_formats=output_formats,
+        output_formats=output_format_enums,
         create_domain_subdir=create_domain_subdir,
         overwrite=overwrite,
     )
 
-    title, outputs = grabber.grab(url, user_agent, use_readability_js, fallback_title, render_flags, output_formats)
+    title, outputs = grabber.grab(url, user_agent, use_readability_js, fallback_title, render_flags, output_format_enums)
     output(title, outputs, url, output_flags)
 
 
 def output(title: str, outputs: dict[OutputFormat, str], url: str, output_flags: OutputFlags):
+    output_dir = None
+    safe_title = None
+
     if should_output_file(outputs):
         if output_flags.create_domain_subdir:
             output_dir = create_output_dir(url)
@@ -336,9 +339,11 @@ def output(title: str, outputs: dict[OutputFormat, str], url: str, output_flags:
         content = outputs.get(fmt)
         if should_output_file([fmt]):
             # output_dir and safe_title are only defined if we're saving to a file
-            write_to_file(content, output_dir, safe_title, fmt, output_flags.overwrite)
+            if content is not None and output_dir is not None and safe_title is not None:
+                write_to_file(content, str(output_dir), safe_title, fmt.value, output_flags.overwrite)
         else:
-            click.echo(content)
+            if content is not None:
+                click.echo(content)
 
 
 def sanitize_filename(filename):

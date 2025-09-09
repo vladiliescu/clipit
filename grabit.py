@@ -21,7 +21,12 @@ import click
 import requests
 import yaml
 from click import ClickException
-from markdownify import ATX, UNDERSCORE, MarkdownConverter, abstract_inline_conversion
+from markdownify import (
+    ATX,
+    UNDERSCORE,
+    MarkdownConverter,
+    abstract_inline_conversion,  # type: ignore
+)
 from mdformat import text as mdformat_text
 from readabilipy import simple_json_from_html_string
 from requests import RequestException
@@ -435,7 +440,7 @@ class GrabitMarkdownConverter(MarkdownConverter):
 
     def convert_i(self, el, text, parent_tags):
         """I like my bolds ** and my italics _."""
-        return abstract_inline_conversion(lambda s: UNDERSCORE)(self, el, text, parent_tags)
+        return abstract_inline_conversion(lambda s: UNDERSCORE)(self, el, text, None)
 
 
 def convert_to_markdown(content_html):

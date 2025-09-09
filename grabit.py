@@ -440,7 +440,7 @@ class GrabitMarkdownConverter(MarkdownConverter):
 
     def convert_i(self, el, text, parent_tags):
         """I like my bolds ** and my italics _."""
-        return abstract_inline_conversion(lambda s: UNDERSCORE)(self, el, text, None)
+        return abstract_inline_conversion(lambda s: UNDERSCORE)(self, el, text, parent_tags)
 
 
 def convert_to_markdown(content_html):

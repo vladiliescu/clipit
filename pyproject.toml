@@ -14,7 +14,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Typing :: Typed",
 ]
-dependencies = ["click>=8.1.0,<8.2", "readabilipy==0.3.0", "markdownify==0.14.1", "PyYAML==6.0.2", "requests==2.32.3", "mdformat==0.7.21"]
+dependencies = ["click>=8.1.0,<8.2", "readabilipy==0.3.0", "markdownify==1.2.0", "PyYAML==6.0.2", "requests==2.32.5", "mdformat==0.7.22"]
 
 [dependency-groups]
 # uv-only groups for local development; not published as pip extras

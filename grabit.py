@@ -3,10 +3,10 @@
 # dependencies = [
 #   "click>=8.1.0,<8.2",
 #   "readabilipy==0.3.0",
-#   "markdownify==0.14.1",
+#   "markdownify==1.2.0",
 #   "PyYAML==6.0.2",
-#   "requests==2.32.3",
-#   "mdformat==0.7.21",
+#   "requests==2.32.5",
+#   "mdformat==0.7.22",
 # ]
 # ///
 import json
@@ -320,7 +320,9 @@ def save(
         overwrite=overwrite,
     )
 
-    title, outputs = grabber.grab(url, user_agent, use_readability_js, fallback_title, render_flags, output_format_enums)
+    title, outputs = grabber.grab(
+        url, user_agent, use_readability_js, fallback_title, render_flags, output_format_enums
+    )
     output(title, outputs, url, output_flags)
 
 
@@ -428,12 +430,12 @@ def create_output_dir(url):
 
 
 class GrabitMarkdownConverter(MarkdownConverter):
-    def convert_em(self, el, text, convert_as_inline):
-        return self.convert_i(el, text, convert_as_inline)
+    def convert_em(self, el, text, parent_tags):
+        return self.convert_i(el, text, parent_tags)
 
-    def convert_i(self, el, text, convert_as_inline):
+    def convert_i(self, el, text, parent_tags):
         """I like my bolds ** and my italics _."""
-        return abstract_inline_conversion(lambda s: UNDERSCORE)(self, el, text, convert_as_inline)
+        return abstract_inline_conversion(lambda s: UNDERSCORE)(self, el, text, parent_tags)
 
 
 def convert_to_markdown(content_html):

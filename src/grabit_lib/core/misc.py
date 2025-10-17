@@ -1,0 +1,2 @@
+class GrabitError(Exception):
+    pass

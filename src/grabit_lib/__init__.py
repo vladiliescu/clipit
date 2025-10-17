@@ -1,10 +1,8 @@
-from grabit_lib.core import OutputFormat, OutputFormatList
+from grabit_lib.core import GrabitError, OutputFormat, OutputFormatList, RenderFlags
+from grabit_lib.grabbers import BaseGrabber, RedditGrabber
 from grabit_lib.lib import (
     VERSION,
-    BaseGrabber,
     OutputFlags,
-    RedditGrabber,
-    RenderFlags,
     grabbers,
     output,
     sanitize_filename,
@@ -21,4 +19,5 @@ __all__ = [
     "RedditGrabber",
     "grabbers",
     "output",
+    "GrabitError",
 ]

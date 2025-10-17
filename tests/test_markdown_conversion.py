@@ -1,4 +1,4 @@
-from grabit_lib.lib import convert_to_markdown
+from grabit_lib.core.markdown_converter import convert_to_markdown
 
 
 def test_converts_bold_and_italics_with_different_markup():

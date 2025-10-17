@@ -2,7 +2,7 @@ import json
 import re
 from dataclasses import dataclass
 from datetime import datetime
-from enum import Enum
+from importlib.metadata import version
 from pathlib import Path
 from urllib.parse import urlparse, urlunparse
 
@@ -20,33 +20,9 @@ from mdformat import text as mdformat_text
 from readabilipy import simple_json_from_html_string
 from requests import RequestException
 
-VERSION = "0.7.2"
+from grabit_lib.core import OutputFormat, OutputFormatList
 
-
-class OutputFormat(Enum):
-    MD = "md"
-    STDOUT_MD = "stdout.md"
-    READABLE_HTML = "html"
-    RAW_HTML = "raw.html"
-
-    def __str__(self):
-        return self.value
-
-
-def should_output_raw_html(output_formats):
-    return OutputFormat.RAW_HTML in output_formats
-
-
-def should_output_readable_html(output_formats):
-    return OutputFormat.READABLE_HTML in output_formats
-
-
-def should_output_markdown(output_formats):
-    return OutputFormat.MD in output_formats or OutputFormat.STDOUT_MD in output_formats
-
-
-def should_output_file(output_formats):
-    return any("stdout" not in fmt.value for fmt in output_formats)
+VERSION = version("grabit-lib")
 
 
 @dataclass
@@ -58,9 +34,13 @@ class RenderFlags:
 
 @dataclass
 class OutputFlags:
-    output_formats: list[OutputFormat]
+    output_formats: OutputFormatList
     create_domain_subdir: bool
     overwrite: bool
+
+
+def should_output_file(output_formats):
+    return any("stdout" not in fmt.value for fmt in output_formats)
 
 
 class BaseGrabber:
@@ -74,21 +54,21 @@ class BaseGrabber:
         use_readability_js: bool,
         fallback_title: str,
         render_flags: RenderFlags,
-        output_formats: list[OutputFormat],
+        output_formats: OutputFormatList,
     ) -> tuple[str, dict[OutputFormat, str]]:
         outputs = {}
 
         html_content = download_html_content(url, user_agent)
-        if should_output_raw_html(output_formats):
+        if output_formats.should_output_raw_html():
             outputs[OutputFormat.RAW_HTML] = html_content
 
         html_readable_content, title = extract_readable_content_and_title(html_content, use_readability_js)
         title = self.post_process_title(title, fallback_title)
 
-        if should_output_readable_html(output_formats):
+        if output_formats.should_output_readable_html():
             outputs[OutputFormat.READABLE_HTML] = html_readable_content
 
-        if should_output_markdown(output_formats):
+        if output_formats.should_output_markdown():
             markdown_content = convert_to_markdown(html_readable_content)
             markdown_content = self.post_process_markdown(url, title, markdown_content, render_flags)
 
@@ -137,12 +117,12 @@ class RedditGrabber(BaseGrabber):
         use_readability_js: bool,
         fallback_title: str,
         render_flags: RenderFlags,
-        output_formats: list[OutputFormat],
+        output_formats: OutputFormatList,
     ) -> tuple[str, dict[OutputFormat, str]]:
         if (
-            should_output_raw_html(output_formats)
-            or should_output_readable_html(output_formats)
-            or not should_output_markdown(output_formats)
+            output_formats.should_output_raw_html()
+            or output_formats.should_output_readable_html()
+            or not output_formats.should_output_markdown()
         ):
             raise ClickException("Reddit posts can only be converted to Markdown.")
 
@@ -214,110 +194,6 @@ class RedditGrabber(BaseGrabber):
 
 
 grabbers = [RedditGrabber()]
-
-
-@click.command()
-@click.argument("url")
-@click.option(
-    "--user-agent",
-    default=f"Grabit/{VERSION}",
-    help="The user agent reported when retrieving web pages",
-    show_default=True,
-)
-@click.version_option(
-    version=VERSION,
-    prog_name="Grabit",
-    message="%(prog)s v%(version)s © 2025 Vlad Iliescu\n%(prog)s is licensed under the GPL v3 License (https://www.gnu.org/licenses/gpl-3.0.html)",
-)
-@click.option(
-    "--yaml-frontmatter/--no-yaml-frontmatter",
-    default=True,
-    help="Include YAML front matter with metadata.",
-    show_default=True,
-)
-@click.option(
-    "--include-title/--no-include-title",
-    default=True,
-    help="Include the page title as an H1 heading.",
-    show_default=True,
-)
-@click.option(
-    "--include-source/--no-include-source",
-    default=False,
-    help="Include the page source.",
-    show_default=True,
-)
-@click.option(
-    "--fallback-title",
-    default="Untitled {date}",
-    help="Fallback title if no title is found. Use {date} for current date.",
-    show_default=True,
-)
-@click.option(
-    "--use-readability-js/--no-use-readability-js",
-    default=True,
-    help="Use Readability.js for processing pages, requires Node to be installed (recommended).",
-    show_default=True,
-)
-@click.option(
-    "--create-domain-subdir/--no-create-domain-subdir",
-    default=True,
-    help="Save the resulting file(s) in a subdirectory named after the domain.",
-    show_default=True,
-)
-@click.option(
-    "--overwrite/--no-overwrite",
-    default=False,
-    help="Overwrite existing files if they already exist.",
-    show_default=True,
-)
-@click.option(
-    "-f",
-    "--format",
-    "output_formats",
-    multiple=True,
-    default=[OutputFormat.MD.value],
-    type=click.Choice(
-        [fmt.value for fmt in OutputFormat],
-        case_sensitive=False,
-    ),
-    help="Which output format(s) to use when saving the content. Can be specified multiple times i.e. -f md -f html",
-    show_default=True,
-)
-def save(
-    url: str,
-    user_agent: str,
-    use_readability_js: bool,
-    yaml_frontmatter: bool,
-    include_title: bool,
-    include_source: bool,
-    fallback_title: str,
-    create_domain_subdir: bool,
-    output_formats: list[str],
-    overwrite: bool,
-):
-    """
-    Download an URL, convert it to Markdown with specified options, and save it to a file.
-    """
-
-    grabber = next((g for g in grabbers if g.can_handle(url)), BaseGrabber())
-    output_format_enums = [OutputFormat(format_str) for format_str in output_formats]
-
-    render_flags = RenderFlags(
-        include_source=include_source,
-        include_title=include_title,
-        yaml_frontmatter=yaml_frontmatter,
-    )
-    output_flags = OutputFlags(
-        output_formats=output_format_enums,
-        create_domain_subdir=create_domain_subdir,
-        overwrite=overwrite,
-    )
-
-    title, outputs = grabber.grab(
-        url, user_agent, use_readability_js, fallback_title, render_flags, output_format_enums
-    )
-    output(title, outputs, url, output_flags)
 
 
 def output(title: str, outputs: dict[OutputFormat, str], url: str, output_flags: OutputFlags):
@@ -476,7 +352,3 @@ def download_html_content(url, user_agent: str) -> str:
     except RequestException as e:
         raise ClickException(f"Error downloading {url}: {e}")
     return html_content
-
-
-if __name__ == "__main__":
-    save()

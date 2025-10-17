@@ -6,8 +6,7 @@
 # ]
 # ///
 import click
-
-from grabit_lib.core import BaseGrabber, OutputFlags, OutputFormat, RenderFlags, VERSION, grabbers, output
+from grabit_lib import VERSION, BaseGrabber, OutputFlags, OutputFormat, OutputFormatList, RenderFlags, grabbers, output
 
 
 @click.command()
@@ -95,7 +94,7 @@ def save(
     """
 
     grabber = next((g for g in grabbers if g.can_handle(url)), BaseGrabber())
-    output_format_enums = [OutputFormat(format_str) for format_str in output_formats]
+    output_format_enums: OutputFormatList = OutputFormatList(output_formats)
 
     render_flags = RenderFlags(
         include_source=include_source,

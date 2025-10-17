@@ -1,5 +1,5 @@
 [project]
-name = "grabit"
+name = "grabit_lib"
 version = "1.0.0"
 description = "Grabit is a library that allows you to download web pages, extract their readable content, convert it to Markdown, and save it locally."
 readme = "README.md"

@@ -8,7 +8,8 @@ This project allows users to download web pages, extract their readable content,
 
 ## Running
 
-- dev mode `uv run --with "grabit @ file:///Users/vladi/Projects/grabit" grabit.py [OPTIONS] URL`
+- tests: `uv run pytest`
+- app: `uv run python grabit.py [OPTIONS] URL`
 
 ## Rules
 

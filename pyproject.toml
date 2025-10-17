@@ -1,10 +1,10 @@
 [project]
 name = "grabit"
-version = "0.7.2"
-description = "Grabit is a command-line tool that allows you to download web pages, extract their readable content, convert it to Markdown, and save it locally."
+version = "1.0.0"
+description = "Grabit is a library that allows you to download web pages, extract their readable content, convert it to Markdown, and save it locally."
 readme = "README.md"
 requires-python = ">=3.11"
-license = "GPL-3.0"
+license = "LGPL-3.0"
 license-files = ["LICEN[CS]E*"]
 authors = [{ name = "Vlad Iliescu" }]
 keywords = ["python", "markdown", "cli", "web scraping", "downloader", "scraper"]
@@ -14,7 +14,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Typing :: Typed",
 ]
-dependencies = ["click>=8.1.0,<8.2", "readabilipy==0.3.0", "markdownify==1.2.0", "PyYAML==6.0.2", "requests==2.32.5", "mdformat==0.7.22"]
+dependencies = ["readabilipy==0.3.0", "markdownify==1.2.0", "PyYAML==6.0.2", "requests==2.32.5", "mdformat==0.7.22"]
 
 [dependency-groups]
 # uv-only groups for local development; not published as pip extras
@@ -24,6 +24,7 @@ dev = [
     "python-dotenv==1.1.1",
     "ruff>=0.5.0",
     "pyright[nodejs]>=1.1.0",
+    "click>=8.1.0,<8.2"
 ]
 
 [tool.pytest.ini_options]

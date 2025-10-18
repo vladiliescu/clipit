@@ -1,5 +1,4 @@
 import re
-from collections.abc import Sequence
 from importlib.metadata import version
 from pathlib import Path
 from urllib.parse import urlparse
@@ -12,13 +11,18 @@ from grabit_lib.core import OutputFlags, OutputFormat
 VERSION = version("grabit-lib")
 
 
-def should_output_file(output_formats: Sequence[OutputFormat]) -> bool:
+def should_output_file(output_formats: dict[OutputFormat, str]) -> bool:
     return any(fmt.is_file_output() for fmt in output_formats)
 
 
-def output(title: str, outputs: dict[OutputFormat, str], url: str, output_flags: OutputFlags):
+def output(title: str, outputs: dict[OutputFormat, str], url: str, create_domain_subdir: bool, overwrite: bool):
     output_dir = None
     safe_title = None
+
+    output_flags = OutputFlags(
+        create_domain_subdir=create_domain_subdir,
+        overwrite=overwrite,
+    )
 
     if should_output_file(outputs):
         if output_flags.create_domain_subdir:

@@ -10,9 +10,7 @@ from grabit_lib import (
     VERSION,
     Grabber,
     GrabitError,
-    OutputFlags,
     OutputFormat,
-    RenderFlags,
     output,
 )
 
@@ -104,18 +102,10 @@ def save(
     try:
         grabber = Grabber(user_agent=user_agent)
 
-        render_flags = RenderFlags(
-            include_source=include_source,
-            include_title=include_title,
-            yaml_frontmatter=yaml_frontmatter,
+        title, outputs = grabber.grab(
+            url, use_readability_js, fallback_title, include_source, include_title, yaml_frontmatter, output_formats
         )
-        output_flags = OutputFlags(
-            create_domain_subdir=create_domain_subdir,
-            overwrite=overwrite,
-        )
-
-        title, outputs = grabber.grab(url, use_readability_js, fallback_title, render_flags, output_formats)
-        output(title, outputs, url, output_flags)
+        output(title, outputs, url, create_domain_subdir, overwrite)
     except GrabitError as e:
         raise click.ClickException(str(e))
 

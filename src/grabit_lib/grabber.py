@@ -1,7 +1,8 @@
-from grabit_lib.core import OutputFormat, OutputFormatList, RenderFlags
+from grabit_lib.core import OutputFormat, OutputFormatList
+from grabit_lib.core.dtos import RenderFlags
 from grabit_lib.grabbers import BaseGrabber, RedditGrabber
 
-grabbers = [RedditGrabber(), BaseGrabber()]
+grabbers: list[BaseGrabber] = [RedditGrabber(), BaseGrabber()]
 
 
 class Grabber:
@@ -13,7 +14,9 @@ class Grabber:
         url: str,
         use_readability_js: bool,
         fallback_title: str,
-        render_flags: RenderFlags,
+        include_source: bool,
+        include_title: bool,
+        yaml_frontmatter: bool,
         output_formats: list[str],
     ) -> tuple[str, dict[OutputFormat, str]]:
         grabber = next((g for g in grabbers if g.can_handle(url)), None)
@@ -21,6 +24,11 @@ class Grabber:
             raise ValueError("No grabber found for the given URL.")
 
         output_format_list: OutputFormatList = OutputFormatList(output_formats)
+        render_flags = RenderFlags(
+            include_source=include_source,
+            include_title=include_title,
+            yaml_frontmatter=yaml_frontmatter,
+        )
 
         return grabber.grab(url, self.user_agent, use_readability_js, fallback_title, render_flags, output_format_list)
 

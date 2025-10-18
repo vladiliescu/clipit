@@ -1,5 +1,4 @@
 import re
-from importlib.metadata import version
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -7,8 +6,6 @@ import click
 from click import ClickException
 
 from grabit_lib.core import OutputFlags, OutputFormat
-
-VERSION = version("grabit-lib")
 
 
 def should_output_file(output_formats: dict[OutputFormat, str]) -> bool:

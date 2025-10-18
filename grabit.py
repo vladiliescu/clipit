@@ -7,10 +7,10 @@
 # ///
 import click
 from grabit_lib import (
-    VERSION,
     Grabber,
     GrabitError,
     OutputFormat,
+    __version__,
 )
 
 
@@ -18,12 +18,12 @@ from grabit_lib import (
 @click.argument("url")
 @click.option(
     "--user-agent",
-    default=f"Grabit/{VERSION}",
+    default=f"Grabit/{__version__}",
     help="The user agent reported when retrieving web pages",
     show_default=True,
 )
 @click.version_option(
-    version=VERSION,
+    version=__version__,
     prog_name="Grabit",
     message="%(prog)s v%(version)s © 2025 Vlad Iliescu\n%(prog)s is licensed under the LGPL v3 License (https://www.gnu.org/licenses/lgpl-3.0.html)",
 )

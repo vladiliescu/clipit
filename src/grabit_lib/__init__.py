@@ -1,11 +1,12 @@
+from importlib.metadata import version
+
 from grabit_lib.core import GrabitError, OutputFormat
 from grabit_lib.grabber import Grabber
-from grabit_lib.lib import (
-    VERSION,
-)
+
+__version__ = version("grabit-lib")
 
 __all__ = [
-    "VERSION",
+    "__version__",
     "Grabber",
     "OutputFormat",
     "GrabitError",

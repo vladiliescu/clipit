@@ -7,16 +7,12 @@ import click
 from click import ClickException
 
 from grabit_lib.core import OutputFlags, OutputFormat
-from grabit_lib.grabbers import RedditGrabber
 
 VERSION = version("grabit-lib")
 
 
 def should_output_file(output_formats):
     return any("stdout" not in fmt.value for fmt in output_formats)
-
-
-grabbers = [RedditGrabber()]
 
 
 def output(title: str, outputs: dict[OutputFormat, str], url: str, output_flags: OutputFlags):

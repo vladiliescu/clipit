@@ -8,13 +8,12 @@
 import click
 from grabit_lib import (
     VERSION,
-    BaseGrabber,
+    Grabber,
     GrabitError,
     OutputFlags,
     OutputFormat,
     OutputFormatList,
     RenderFlags,
-    grabbers,
     output,
 )
 
@@ -104,7 +103,8 @@ def save(
     """
 
     try:
-        grabber = next((g for g in grabbers if g.can_handle(url)), BaseGrabber())
+        grabber = Grabber(user_agent=user_agent)
+
         output_format_enums: OutputFormatList = OutputFormatList(output_formats)
 
         render_flags = RenderFlags(
@@ -118,9 +118,7 @@ def save(
             overwrite=overwrite,
         )
 
-        title, outputs = grabber.grab(
-            url, user_agent, use_readability_js, fallback_title, render_flags, output_format_enums
-        )
+        title, outputs = grabber.grab(url, use_readability_js, fallback_title, render_flags, output_format_enums)
         output(title, outputs, url, output_flags)
     except GrabitError as e:
         raise click.ClickException(str(e))

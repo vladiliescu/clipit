@@ -1,9 +1,10 @@
 import json
 from urllib.parse import urlparse, urlunparse
 
-from grabit_lib import GrabitError, OutputFormat, OutputFormatList
+from grabit_lib import GrabitError
 from grabit_lib.core import RenderFlags
 from grabit_lib.core.downloader import download_html_content
+from grabit_lib.core.output_format import OutputFormat, OutputFormatList
 from grabit_lib.grabbers.base_grabber import BaseGrabber
 
 

@@ -1,4 +1,4 @@
-from grabit_lib.core import GrabitError, OutputFormat, OutputFormatList, RenderFlags
+from grabit_lib.core import GrabitError, OutputFormat, RenderFlags
 from grabit_lib.grabber import Grabber
 from grabit_lib.grabbers import BaseGrabber, RedditGrabber
 from grabit_lib.lib import (
@@ -15,7 +15,6 @@ __all__ = [
     "BaseGrabber",
     "OutputFlags",
     "OutputFormat",
-    "OutputFormatList",
     "RenderFlags",
     "RedditGrabber",
     "grabbers",

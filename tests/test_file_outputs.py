@@ -1,5 +1,5 @@
 import pytest
-from grabit_lib.lib import sanitize_filename
+from grabit_lib.core.writer import sanitize_filename
 
 
 @pytest.mark.parametrize(

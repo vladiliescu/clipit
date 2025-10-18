@@ -3,8 +3,8 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import click
-from click import ClickException
 
+from grabit_lib import GrabitError
 from grabit_lib.core import OutputFlags, OutputFormat
 
 
@@ -78,7 +78,7 @@ def write_to_file(
             f.write(markdown_content)
         click.echo(f"Saved {extension} content to {output_file}")
     except Exception as e:
-        raise ClickException(f"Error writing to file {output_file}: {e}")
+        raise GrabitError(f"Error writing to file {output_file}: {e}")
 
 
 def create_output_dir(url):

@@ -11,7 +11,6 @@ from grabit_lib import (
     Grabber,
     GrabitError,
     OutputFormat,
-    output,
 )
 
 
@@ -102,10 +101,17 @@ def save(
     try:
         grabber = Grabber(user_agent=user_agent)
 
-        title, outputs = grabber.grab(
-            url, use_readability_js, fallback_title, include_source, include_title, yaml_frontmatter, output_formats
+        grabber.grab_and_save(
+            url,
+            use_readability_js,
+            fallback_title,
+            include_source,
+            include_title,
+            yaml_frontmatter,
+            output_formats,
+            create_domain_subdir,
+            overwrite,
         )
-        output(title, outputs, url, create_domain_subdir, overwrite)
     except GrabitError as e:
         raise click.ClickException(str(e))
 

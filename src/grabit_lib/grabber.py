@@ -1,6 +1,7 @@
 from grabit_lib.core import OutputFormat, OutputFormatList
 from grabit_lib.core.dtos import RenderFlags
 from grabit_lib.grabbers import BaseGrabber, RedditGrabber
+from grabit_lib.lib import output
 
 grabbers: list[BaseGrabber] = [RedditGrabber(), BaseGrabber()]
 
@@ -32,6 +33,19 @@ class Grabber:
 
         return grabber.grab(url, self.user_agent, use_readability_js, fallback_title, render_flags, output_format_list)
 
-    def grab_and_save(self, url: str) -> str:
-        data = self.grab(url)
-        return f"Data saved: {data}"
+    def grab_and_save(
+        self,
+        url: str,
+        use_readability_js: bool,
+        fallback_title: str,
+        include_source: bool,
+        include_title: bool,
+        yaml_frontmatter: bool,
+        output_formats: list[str],
+        create_domain_subdir: bool,
+        overwrite: bool,
+    ) -> None:
+        title, outputs = self.grab(
+            url, use_readability_js, fallback_title, include_source, include_title, yaml_frontmatter, output_formats
+        )
+        output(title, outputs, url, create_domain_subdir, overwrite)

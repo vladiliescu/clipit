@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-from grabit_lib.core.output_format import OutputFormatList
-
 
 @dataclass
 class RenderFlags:
@@ -12,6 +10,5 @@ class RenderFlags:
 
 @dataclass
 class OutputFlags:
-    output_formats: OutputFormatList
     create_domain_subdir: bool
     overwrite: bool

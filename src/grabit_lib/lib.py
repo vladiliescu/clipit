@@ -1,4 +1,5 @@
 import re
+from collections.abc import Sequence
 from importlib.metadata import version
 from pathlib import Path
 from urllib.parse import urlparse
@@ -11,8 +12,8 @@ from grabit_lib.core import OutputFlags, OutputFormat
 VERSION = version("grabit-lib")
 
 
-def should_output_file(output_formats):
-    return any("stdout" not in fmt.value for fmt in output_formats)
+def should_output_file(output_formats: Sequence[OutputFormat]) -> bool:
+    return any(fmt.is_file_output() for fmt in output_formats)
 
 
 def output(title: str, outputs: dict[OutputFormat, str], url: str, output_flags: OutputFlags):
@@ -26,15 +27,14 @@ def output(title: str, outputs: dict[OutputFormat, str], url: str, output_flags:
             output_dir = Path(".")
         safe_title = sanitize_filename(title)
 
-    for fmt in output_flags.output_formats:
-        content = outputs.get(fmt)
-        if should_output_file([fmt]):
+    for format, output in outputs.items():
+        if format.is_file_output():
             # output_dir and safe_title are only defined if we're saving to a file
-            if content is not None and output_dir is not None and safe_title is not None:
-                write_to_file(content, str(output_dir), safe_title, fmt.value, output_flags.overwrite)
+            if output is not None and output_dir is not None and safe_title is not None:
+                write_to_file(output, str(output_dir), safe_title, format.value, output_flags.overwrite)
         else:
-            if content is not None:
-                click.echo(content)
+            if output is not None:
+                click.echo(output)
 
 
 def sanitize_filename(filename):

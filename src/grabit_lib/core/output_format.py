@@ -10,10 +10,14 @@ class OutputFormat(Enum):
     def __str__(self):
         return self.value
 
+    def is_file_output(self) -> bool:
+        """Check if this format should be written to a file (vs stdout)."""
+        return "stdout" not in self.value
+
 
 class OutputFormatList:
     def __init__(self, formats: list[str]):
-        self._formats: list[OutputFormat] = [OutputFormat(format_str) for format_str in formats]
+        self._formats: list[OutputFormat] = [OutputFormat(format) for format in formats]
 
     def __iter__(self):
         return iter(self._formats)

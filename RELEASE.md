@@ -1,12 +1,12 @@
 # A simple release checklist
 
-- [ ] Update the version number in `grabit.py`
-- [ ] Sync the content in README.md with the latest changes in `grabit.py` and git log. Manually review them as they'll most likely contain some gibberish as well.
+- [ ] Update the version number in `pyproject.toml`
+- [ ] Sync the content in README.md with the latest changes in the app and git log. Manually review them as they'll most likely contain some gibberish as well.
 
 ###
 @grabit.py @readme.md
 
-Help me update the readme file with the latest updates in `grabit.py`. Remember to split the release notes into new features and fixes. If it helps, here's the git log:
+Help me update the readme file with the latest updates in the app. Remember to split the release notes into new features and fixes. If it helps, here's the git log:
 
 ```
 output of `git log v<previous_version>..HEAD --pretty=format:"%h %ad | %s%d [%an]" --date=short`

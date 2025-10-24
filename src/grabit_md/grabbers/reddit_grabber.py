@@ -16,7 +16,7 @@ class RedditGrabber(BaseGrabber):
     def grab(
         self,
         url: str,
-        user_agent: str,
+        user_agent: str | None,
         use_readability_js: bool,
         fallback_title: str,
         render_flags: RenderFlags,

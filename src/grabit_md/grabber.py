@@ -7,7 +7,7 @@ grabbers: list[BaseGrabber] = [RedditGrabber(), BaseGrabber()]
 
 
 class Grabber:
-    def __init__(self, user_agent: str):
+    def __init__(self, user_agent: str | None = None):
         self.user_agent = user_agent
 
     def grab(

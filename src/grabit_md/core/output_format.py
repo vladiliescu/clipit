@@ -17,7 +17,7 @@ class OutputFormat(Enum):
 
 class OutputFormatList:
     def __init__(self, formats: list[str]):
-        self._formats: list[OutputFormat] = [OutputFormat(format) for format in formats]
+        self._formats: list[OutputFormat] = [OutputFormat(fmt) for fmt in formats]
 
     def __iter__(self):
         return iter(self._formats)
@@ -36,3 +36,9 @@ class OutputFormatList:
 
     def should_output_markdown(self) -> bool:
         return OutputFormat.MD in self._formats or OutputFormat.STDOUT_MD in self._formats
+
+    def should_output_markdown_file(self) -> bool:
+        return OutputFormat.MD in self._formats
+
+    def should_output_markdown_stdout(self) -> bool:
+        return OutputFormat.STDOUT_MD in self._formats

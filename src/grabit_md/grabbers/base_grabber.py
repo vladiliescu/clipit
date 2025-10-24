@@ -18,7 +18,7 @@ class BaseGrabber:
     def grab(
         self,
         url: str,
-        user_agent: str,
+        user_agent: str | None,
         use_readability_js: bool,
         fallback_title: str,
         render_flags: RenderFlags,
@@ -40,8 +40,11 @@ class BaseGrabber:
             markdown_content = convert_to_markdown(html_readable_content)
             markdown_content = self.post_process_markdown(url, title, markdown_content, render_flags)
 
-            outputs[OutputFormat.MD] = markdown_content
-            outputs[OutputFormat.STDOUT_MD] = markdown_content
+            if output_formats.should_output_markdown_file():
+                outputs[OutputFormat.MD] = markdown_content
+
+            if output_formats.should_output_markdown_stdout():
+                outputs[OutputFormat.STDOUT_MD] = markdown_content
 
         return title, outputs
 

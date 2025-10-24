@@ -18,7 +18,7 @@ The project abides by the following rules
 - The library uses uv for package management. So everything needs to be installed via `uv add` or `uv sync --extra dev` and run via `uv run ...`
 - The cli tool is run using `uv run grabit.py`
 - `uv` is already available.
-- Every modification you make MUST to be validated by running `cd grabit_lib && uvx ty check . && uv run ruff check`.
+- Every modification you make MUST be validated by running `cd grabit_lib && uvx ty check . && uv run ruff check`.
 
 # Coding Assistant (Copilot)
 

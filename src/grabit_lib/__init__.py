@@ -1,9 +1,13 @@
-from importlib.metadata import version
+from importlib.metadata import PackageNotFoundError, version
 
 from grabit_lib.core import GrabitError, OutputFormat
 from grabit_lib.grabber import Grabber
 
-__version__ = version("grabit-lib")
+try:
+    __version__ = version("grabit_lib")
+except PackageNotFoundError:
+    # Fallback when running from source without installation
+    __version__ = "dev"
 
 __all__ = [
     "__version__",

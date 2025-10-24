@@ -1,6 +1,6 @@
 import click
 
-from grabit_lib import Grabber, GrabitError, OutputFormat, __version__
+from grabit_md import Grabber, GrabitError, OutputFormat, __version__
 
 
 @click.command()

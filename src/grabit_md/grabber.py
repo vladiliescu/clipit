@@ -1,7 +1,7 @@
-from grabit_lib.core import OutputFormat, OutputFormatList
-from grabit_lib.core.dtos import RenderFlags
-from grabit_lib.core.writer import output
-from grabit_lib.grabbers import BaseGrabber, RedditGrabber
+from grabit_md.core import OutputFormat, OutputFormatList
+from grabit_md.core.dtos import RenderFlags
+from grabit_md.core.writer import output
+from grabit_md.grabbers import BaseGrabber, RedditGrabber
 
 grabbers: list[BaseGrabber] = [RedditGrabber(), BaseGrabber()]
 

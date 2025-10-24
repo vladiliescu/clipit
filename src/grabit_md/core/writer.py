@@ -4,8 +4,8 @@ from urllib.parse import urlparse
 
 import click
 
-from grabit_lib import GrabitError
-from grabit_lib.core import OutputFlags, OutputFormat
+from grabit_md import GrabitError
+from grabit_md.core import OutputFlags, OutputFormat
 
 
 def should_output_file(output_formats: dict[OutputFormat, str]) -> bool:

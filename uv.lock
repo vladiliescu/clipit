@@ -98,7 +98,7 @@ wheels = [
 ]
 
 [[package]]
-name = "grabit-lib"
+name = "grabit-md"
 version = "1.0.0"
 source = { virtual = "." }
 dependencies = [

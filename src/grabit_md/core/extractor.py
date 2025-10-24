@@ -1,6 +1,6 @@
 from readabilipy import simple_json_from_html_string
 
-from grabit_lib import GrabitError
+from grabit_md import GrabitError
 
 
 def extract_readable_content_and_title(html_content, use_readability_js):

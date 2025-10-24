@@ -1,7 +1,7 @@
 import requests
 from requests import RequestException
 
-from grabit_lib.core import GrabitError
+from grabit_md.core import GrabitError
 
 
 def download_html_content(url, user_agent: str) -> str:

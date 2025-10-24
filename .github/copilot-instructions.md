@@ -3,22 +3,25 @@
 This project allows users to download web pages, extract their readable content, convert it to Markdown, and save it locally. It's written in Python and uses modern development practices.
 
 ## Structure:
-- `grabit_lib` -- the core logic, exposed as a library (on PyPi)
-- `grabit.py` -- a CLI tool developed using `click`, that exposes the core logic to end users wanting a simple way to run the tool.
+- `grabit_md` -- the core logic, exposed as a library on PyPI as `grabit-md`
+- `grabit` -- a console script entry point (via `[project.scripts]`) that provides the CLI
 
 ## Running
 
 - tests: `uv run pytest`
-- app: `uv run python grabit.py [OPTIONS] URL`
+- app (local dev): `uvx --from . grabit [OPTIONS] URL`
+- app (after publishing): `uvx grabit [OPTIONS] URL`
+- legacy (still works): `uv run python grabit.py [OPTIONS] URL`
 
 ## Rules
 
 The project abides by the following rules
 - Is modern and follows best practices for Python
 - The library uses uv for package management. So everything needs to be installed via `uv add` or `uv sync --extra dev` and run via `uv run ...`
-- The cli tool is run using `uv run grabit.py`
+- The CLI tool is run using `uvx --from . grabit` during local development
+- Package name on PyPI: `grabit-md`, console script name: `grabit`, Python package: `grabit_md`
 - `uv` is already available.
-- Every modification you make MUST to be validated by running `cd grabit_lib && uvx ty check . && uv run ruff check`.
+- Every modification you make MUST be validated by running `cd src/grabit_md && uvx ty check . && uv run ruff check`.
 
 # Coding Assistant (Copilot)
 

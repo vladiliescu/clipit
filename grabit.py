@@ -8,4 +8,5 @@
 from grabit_md.cli import main
 
 if __name__ == "__main__":
+    print("Running this script directly is deprecated, please use `uvx grabit [OPTIONS] url`")
     main()

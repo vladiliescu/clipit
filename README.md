@@ -23,14 +23,19 @@ I'm using it to save bookmarks in [Obsidian](https://obsidian.md/), so you'll se
 
 ## Installation
 
-- Ensure [uv](https://docs.astral.sh/uv/) is installed
-- Ensure [Node.js](https://nodejs.org/) is installed (optional, required for Readability.js, see below for options)
-- Download [grabit.py](https://github.com/vladiliescu/grabit/releases/latest/download/grabit.py) to a local folder on your machine, e.g. `~/scripts`.
+1. Ensure [uv](https://docs.astral.sh/uv/) is installed
+2. Ensure [Node.js](https://nodejs.org/) is installed (optional, required for Readability.js, see below for options)
+3. That's it, now you can run `grabit` directly with `uvx`:
+
+```sh
+uvx grabit [OPTIONS] URL
+```
+
 
 ## Usage
 
 ```sh
-uv run -q <download-path>/grabit.py [OPTIONS] URL
+uvx grabit [OPTIONS] URL
 ```
 
 ### Options
@@ -50,38 +55,37 @@ uv run -q <download-path>/grabit.py [OPTIONS] URL
 
 - **Save a web page as Markdown with the default options:**
 ```sh
-uv run grabit.py https://example.com/article
+uvx grabit https://example.com/article
 ```
 
 - **Save as both Markdown and readable HTML:**
 ```sh
-uv run grabit.py -f md -f html https://example.com/article
+uvx grabit -f md -f html https://example.com/article
 ```
 
 - **Set a custom User-Agent:**
 ```sh
-uv run grabit.py --user-agent "MyCustomAgent/1.0" https://example.com/article 
+uvx grabit --user-agent "MyCustomAgent/1.0" https://example.com/article
 ```
 
 - **Output markdown content to stdout:**
 ```sh
-uv run -q grabit.py -f stdout.md https://example.com/article
+uvx grabit -f stdout.md https://example.com/article
 ```
-Note the `-q` flag to suppress uv's output.
 
 - **Output markdown content to clipboard (MacOS):**
 ```sh
-uv run -q grabit.py -f stdout.md https://example.com/article | pbcopy
+uvx grabit -f stdout.md https://example.com/article | pbcopy
 ```
 
 - **Disable YAML front matter and include source URL:**
 ```sh
-uv run grabit.py --no-yaml-frontmatter --include-source https://example.com/article
+uvx grabit --no-yaml-frontmatter --include-source https://example.com/article
 ```
 
 - **Save files in the working directory, without creating a domain subdirectory:**
 ```sh
-uv run grabit.py --no-create-domain-subdir https://example.com/article
+uvx grabit --no-create-domain-subdir https://example.com/article
 ```
 
 ## Requirements
@@ -94,4 +98,3 @@ uv run grabit.py --no-create-domain-subdir https://example.com/article
 **Grabit**, a tool for archiving web content, copyright (C) 2025  **Vlad Iliescu**
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See the [LICENSE](./LICENSE) for details.
-

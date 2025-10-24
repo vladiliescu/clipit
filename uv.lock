@@ -102,6 +102,7 @@ name = "grabit-lib"
 version = "1.0.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "click" },
     { name = "markdownify" },
     { name = "mdformat" },
     { name = "pyyaml" },
@@ -121,6 +122,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "click", specifier = ">=8.1.0,<8.2" },
     { name = "markdownify", specifier = "==1.2.0" },
     { name = "mdformat", specifier = "==0.7.22" },
     { name = "pyyaml", specifier = "==6.0.2" },

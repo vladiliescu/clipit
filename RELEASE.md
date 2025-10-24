@@ -1,6 +1,6 @@
 # A simple release checklist
 
-- [ ] Update the version number in `grabit.py`
+- [ ] Update the version number in `pyproject.toml`
 - [ ] Sync the content in README.md with the latest changes in `grabit.py` and git log. Manually review them as they'll most likely contain some gibberish as well.
 
 ###

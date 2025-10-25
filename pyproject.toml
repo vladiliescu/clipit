@@ -16,6 +16,11 @@ classifiers = [
 ]
 dependencies = ["readabilipy==0.3.0", "markdownify==1.2.0", "PyYAML==6.0.2", "requests==2.32.5", "mdformat==0.7.22", "click>=8.1.0,<8.2"]
 
+[project.urls]
+Homepage = "https://github.com/vladiliescu/clipit"
+Repository = "https://github.com/vladiliescu/clipit"
+
+
 [project.scripts]
 clipit = "clipit.cli:main"
 

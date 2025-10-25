@@ -35,4 +35,4 @@ jobs:
       run: uv run ruff check
 
     - name: Run type checking
-      run: uv run pyright
+      run: uvx ty check

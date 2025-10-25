@@ -1,11 +1,11 @@
 import json
 from urllib.parse import urlparse, urlunparse
 
-from grabit_md import GrabitError
-from grabit_md.core import RenderFlags
-from grabit_md.core.downloader import download_html_content
-from grabit_md.core.output_format import OutputFormat, OutputFormatList
-from grabit_md.grabbers.base_grabber import BaseGrabber
+from clipit import ClipitError
+from clipit.core import RenderFlags
+from clipit.core.downloader import download_html_content
+from clipit.core.output_format import OutputFormat, OutputFormatList
+from clipit.grabbers.base_grabber import BaseGrabber
 
 
 class RedditGrabber(BaseGrabber):
@@ -27,7 +27,7 @@ class RedditGrabber(BaseGrabber):
             or output_formats.should_output_readable_html()
             or not output_formats.should_output_markdown()
         ):
-            raise GrabitError("Reddit posts can only be converted to Markdown.")
+            raise ClipitError("Reddit posts can only be converted to Markdown.")
 
         outputs = {}
 
@@ -91,6 +91,6 @@ class RedditGrabber(BaseGrabber):
             markdown += parse_comments(comments_data)
 
         except Exception as e:
-            raise GrabitError(f"Error converting Reddit JSON to Markdown: {str(e)}")
+            raise ClipitError(f"Error converting Reddit JSON to Markdown: {str(e)}")
 
         return markdown

@@ -3,25 +3,25 @@
 This project allows users to download web pages, extract their readable content, convert it to Markdown, and save it locally. It's written in Python and uses modern development practices.
 
 ## Structure:
-- `grabit_md` -- the core logic, exposed as a library on PyPI as `grabit-md`
-- `grabit` -- a console script entry point (via `[project.scripts]`) that provides the CLI
+- `clipit` -- the core logic, exposed as a library on PyPI as `clipit`
+- `clipit` -- a console script entry point (via `[project.scripts]`) that provides the CLI
 
 ## Running
 
 - tests: `uv run pytest`
-- app (local dev): `uvx --from . grabit [OPTIONS] URL`
-- app (after publishing): `uvx grabit [OPTIONS] URL`
-- legacy (still works): `uv run python grabit.py [OPTIONS] URL`
+- app (local dev): `uvx --from . clipit [OPTIONS] URL`
+- app (after publishing): `uvx clipit [OPTIONS] URL`
+- legacy (still works): `uv run python clipit.py [OPTIONS] URL`
 
 ## Rules
 
 The project abides by the following rules
 - Is modern and follows best practices for Python
 - The library uses uv for package management. So everything needs to be installed via `uv add` or `uv sync --extra dev` and run via `uv run ...`
-- The CLI tool is run using `uvx --from . grabit` during local development
-- Package name on PyPI: `grabit-md`, console script name: `grabit`, Python package: `grabit_md`
+- The CLI tool is run using `uvx --from . clipit` during local development
+- Package name on PyPI: `clipit`, console script name: `clipit`, Python package: `clipit`
 - `uv` is already available.
-- Every modification you make MUST be validated by running `cd src/grabit_md && uvx ty check . && uv run ruff check`.
+- Every modification you make MUST be validated by running `cd src/clipit && uvx ty check . && uv run ruff check`.
 
 # Coding Assistant (Copilot)
 

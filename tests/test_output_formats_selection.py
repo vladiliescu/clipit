@@ -2,8 +2,9 @@
 from __future__ import annotations
 
 import pytest
-from grabit_md.core.output_format import OutputFormat
-from grabit_md.grabber import Grabber
+
+from clipit.core.output_format import OutputFormat
+from clipit.grabber import Grabber
 
 
 @pytest.mark.parametrize(

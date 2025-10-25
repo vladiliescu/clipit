@@ -1,19 +1,19 @@
 import click
 
-from grabit_md import Grabber, GrabitError, OutputFormat, __version__
+from clipit import ClipitError, Grabber, OutputFormat, __version__
 
 
 @click.command()
 @click.argument("url")
 @click.option(
     "--user-agent",
-    default=f"Grabit/{__version__}",
+    default=f"Clipit/{__version__}",
     help="The user agent reported when retrieving web pages",
     show_default=True,
 )
 @click.version_option(
     version=__version__,
-    prog_name="Grabit",
+    prog_name="Clipit",
     message="%(prog)s v%(version)s © 2025 Vlad Iliescu\n%(prog)s is licensed under the LGPL v3 License (https://www.gnu.org/licenses/lgpl-3.0.html)",
 )
 @click.option(
@@ -96,7 +96,7 @@ def main(
             create_domain_subdir=create_domain_subdir,
             overwrite=overwrite,
         )
-    except GrabitError as e:
+    except ClipitError as e:
         raise click.ClickException(str(e))
 
 

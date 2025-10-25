@@ -24,7 +24,7 @@ jobs:
         run: uv sync --group dev
 
       - name: Run type checking
-        run: cd src/grabit_md && uvx ty check .
+        run: cd src/clipit && uvx ty check .
 
       - name: Run linting
         run: uv run ruff check

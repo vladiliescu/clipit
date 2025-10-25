@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from grabit_md.core import OutputFormat, OutputFormatList, RenderFlags
-from grabit_md.core.downloader import download_html_content
-from grabit_md.core.extractor import extract_readable_content_and_title
-from grabit_md.core.markdown_converter import (
+from clipit.core import OutputFormat, OutputFormatList, RenderFlags
+from clipit.core.downloader import download_html_content
+from clipit.core.extractor import extract_readable_content_and_title
+from clipit.core.markdown_converter import (
     convert_to_markdown,
     try_add_yaml_frontmatter,
     try_include_source,

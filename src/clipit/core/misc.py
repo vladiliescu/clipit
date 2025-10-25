@@ -1,0 +1,2 @@
+class ClipitError(Exception):
+    pass

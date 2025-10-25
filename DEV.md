@@ -9,13 +9,13 @@ uv run pytest
 # Run app in dev-mode
 
 # Using uvx console script (local project)
-uvx --from . grabit --help
+uvx --from . clipit --help
 
-uvx --from . grabit [OPTIONS] URL
+uvx --from . clipit [OPTIONS] URL
 
 # Legacy shim (still works during migration)
-uv run python grabit.py --help
+uv run python clipit.py --help
 
-uv run python grabit.py [OPTIONS] URL
+uv run python clipit.py [OPTIONS] URL
 
 ```

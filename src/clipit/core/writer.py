@@ -4,8 +4,8 @@ from urllib.parse import urlparse
 
 import click
 
-from grabit_md import GrabitError
-from grabit_md.core import OutputFlags, OutputFormat
+from clipit import ClipitError
+from clipit.core import OutputFlags, OutputFormat
 
 
 def should_output_file(output_formats: dict[OutputFormat, str]) -> bool:
@@ -78,7 +78,7 @@ def write_to_file(
             f.write(markdown_content)
         click.echo(f"Saved {extension} content to {output_file}")
     except Exception as e:
-        raise GrabitError(f"Error writing to file {output_file}: {e}")
+        raise ClipitError(f"Error writing to file {output_file}: {e}")
 
 
 def create_output_dir(url):

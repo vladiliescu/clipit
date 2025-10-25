@@ -37,7 +37,7 @@ def try_add_yaml_frontmatter(yaml_frontmatter: bool, markdown_content, title, ur
     return markdown_content
 
 
-class GrabitMarkdownConverter(MarkdownConverter):
+class ClipitMarkdownConverter(MarkdownConverter):
     def convert_em(self, el, text, parent_tags):
         return self.convert_i(el, text, parent_tags)
 
@@ -47,7 +47,7 @@ class GrabitMarkdownConverter(MarkdownConverter):
 
 
 def convert_to_markdown(content_html):
-    converter = GrabitMarkdownConverter(heading_style=ATX, bullets="-")
+    converter = ClipitMarkdownConverter(heading_style=ATX, bullets="-")
     markdown_content = converter.convert(content_html)
     pretty_markdown_content = mdformat_text(markdown_content)
     return pretty_markdown_content

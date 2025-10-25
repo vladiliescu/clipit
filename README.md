@@ -1,6 +1,6 @@
-# Grabit
+# Clipit
 
-Grabit is a command-line tool that allows you to download web pages, extract their readable content, convert it to Markdown, and save it locally.
+Clipit is a command-line tool that allows you to download web pages, extract their readable content, convert it to Markdown, and save it locally.
 
 It's ideal for archiving articles, blog posts, or any web content you may want to save forever and ever. It works well for feeding web content into LLMs too.
 
@@ -19,23 +19,23 @@ I'm using it to save bookmarks in [Obsidian](https://obsidian.md/), so you'll se
 - **Supports multiple output formats**: Save content as Markdown, readable or raw HTML, or just send it to stdout so you can pipe it into another app
 - **Customizable output**: Include YAML front matter, page titles, source links, and control the output directory structure. This is especially useful for integrating with knowledge management systems such as [Obsidian](https://obsidian.md/)
 - **Uses Readability.js**: Extracts the main content from web pages for cleaner outputs (requires Node.js to be installed)
-- **Supports Reddit posts**: Grabit now handles Reddit (both text & link) posts (including comments)
+- **Supports Reddit posts**: Clipit now handles Reddit (both text & link) posts (including comments)
 
 ## Installation
 
 1. Ensure [uv](https://docs.astral.sh/uv/) is installed
 2. Ensure [Node.js](https://nodejs.org/) is installed (optional, required for Readability.js, see below for options)
-3. That's it, now you can run `grabit` directly with `uvx`:
+3. That's it, now you can run `clipit` directly with `uvx`:
 
 ```sh
-uvx grabit [OPTIONS] URL
+uvx clipit [OPTIONS] URL
 ```
 
 
 ## Usage
 
 ```sh
-uvx grabit [OPTIONS] URL
+uvx clipit [OPTIONS] URL
 ```
 
 ### Options
@@ -43,7 +43,7 @@ uvx grabit [OPTIONS] URL
 - `--yaml-frontmatter / --no-yaml-frontmatter`: Include YAML front matter with metadata, useful for saving & viewing content in [Obsidian](https://obsidian.md) (default: `enabled`).
 - `--include-title / --no-include-title`: Include the page title as an H1 heading. A bit redundant when rendering the YAML frontmatter, but I like it anyway (default: `enabled`).
 - `--include-source / --no-include-source`: Include the page source URL at the top of the document. Also a bit redundant when rendering the YAML frontmatter, but this one I don't like so much (default: `disabled`).
-- `--user-agent TEXT`: Set a custom User-Agent to be used for retrieving web pages (default: `Grabit/<version>`).
+- `--user-agent TEXT`: Set a custom User-Agent to be used for retrieving web pages (default: `Clipit/<version>`).
 - `--fallback-title TEXT`: Fallback title if no title is found. Use `{date}` for the current date (default: `Untitled {date}`).
 - `--use-readability-js / --no-use-readability-js`: Use Readability.js for processing pages. Disabling it will result in **some** processing courtesy of [ReadabiliPy](https://github.com/alan-turing-institute/ReadabiliPy), but it doesn't look so great to be honest (requires Node.js, default: `enabled`).
 - `--create-domain-subdir / --no-create-domain-subdir`: Save the resulting files in a subdirectory named after the domain. Useful when saving a **lot** of bookmarks in the same Obsidian vault (default: `enabled`).
@@ -55,37 +55,37 @@ uvx grabit [OPTIONS] URL
 
 - **Save a web page as Markdown with the default options:**
 ```sh
-uvx grabit https://example.com/article
+uvx clipit https://example.com/article
 ```
 
 - **Save as both Markdown and readable HTML:**
 ```sh
-uvx grabit -f md -f html https://example.com/article
+uvx clipit -f md -f html https://example.com/article
 ```
 
 - **Set a custom User-Agent:**
 ```sh
-uvx grabit --user-agent "MyCustomAgent/1.0" https://example.com/article
+uvx clipit --user-agent "MyCustomAgent/1.0" https://example.com/article
 ```
 
 - **Output markdown content to stdout:**
 ```sh
-uvx grabit -f stdout.md https://example.com/article
+uvx clipit -f stdout.md https://example.com/article
 ```
 
 - **Output markdown content to clipboard (MacOS):**
 ```sh
-uvx grabit -f stdout.md https://example.com/article | pbcopy
+uvx clipit -f stdout.md https://example.com/article | pbcopy
 ```
 
 - **Disable YAML front matter and include source URL:**
 ```sh
-uvx grabit --no-yaml-frontmatter --include-source https://example.com/article
+uvx clipit --no-yaml-frontmatter --include-source https://example.com/article
 ```
 
 - **Save files in the working directory, without creating a domain subdirectory:**
 ```sh
-uvx grabit --no-create-domain-subdir https://example.com/article
+uvx clipit --no-create-domain-subdir https://example.com/article
 ```
 
 ## Requirements
@@ -95,6 +95,6 @@ uvx grabit --no-create-domain-subdir https://example.com/article
 
 ### License
 
-**Grabit**, a tool for archiving web content, copyright (C) 2025  **Vlad Iliescu**
+**Clipit**, a tool for archiving web content, copyright (C) 2025  **Vlad Iliescu**
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See the [LICENSE](./LICENSE) for details.

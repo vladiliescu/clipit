@@ -17,7 +17,7 @@ def test_cli_generates_md_and_html_and_cleans_up():
         "uvx",
         "--from",
         str(project_root),
-        "grabit",
+        "clipit",
         "--no-create-domain-subdir",
         "-f",
         "md",

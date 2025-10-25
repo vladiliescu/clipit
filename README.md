@@ -1,6 +1,6 @@
 # Clipit
 
-Clipit is a command-line tool that allows you to download web pages, extract their readable content, convert it to Markdown, and save it locally.
+Clipit (previously named Grabit) is a command-line tool that allows you to download web pages, extract their readable content, convert it to Markdown, and save it locally.
 
 It's ideal for archiving articles, blog posts, or any web content you may want to save forever and ever. It works well for feeding web content into LLMs too.
 

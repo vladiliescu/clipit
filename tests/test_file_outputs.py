@@ -1,5 +1,4 @@
 import pytest
-
 from clipit.core.writer import sanitize_filename
 
 

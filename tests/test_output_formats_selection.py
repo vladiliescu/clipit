@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import pytest
-
 from clipit.core.output_format import OutputFormat
 from clipit.grabber import Grabber
 

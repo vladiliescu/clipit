@@ -25,17 +25,24 @@ I'm using it to save bookmarks in [Obsidian](https://obsidian.md/), so you'll se
 
 1. Ensure [uv](https://docs.astral.sh/uv/) is installed
 2. Ensure [Node.js](https://nodejs.org/) is installed (optional, required for Readability.js, see below for options)
-3. That's it, now you can run `clipit` directly with `uvx`:
+3. Install **clipit** as a [global uv tool](https://docs.astral.sh/uv/concepts/tools/) (recommended, see below for an alternative)
 
 ```sh
-uvx clipit [OPTIONS] URL
+uv tool install clipit
 ```
 
+4. Run **clipit** as any other CLI app  
+
+```sh
+clipit -f stdout.md https://vladiliescu.net
+```
+
+Alternatively, if you don't want to install it, you can just run it with uvx: `uvx clipit -f stdout.md https://vladiliescu.net`. Keep in mind that this will cause **uv** to check for dependency updates every time you run it, causing you to lose 1-2 precious seconds every time you save something 🥶. 
 
 ## Usage
 
 ```sh
-uvx clipit [OPTIONS] URL
+clipit [OPTIONS] URL
 ```
 
 ### Options
@@ -55,37 +62,37 @@ uvx clipit [OPTIONS] URL
 
 - **Save a web page as Markdown with the default options:**
 ```sh
-uvx clipit https://example.com/article
+clipit https://example.com/article
 ```
 
 - **Save as both Markdown and readable HTML:**
 ```sh
-uvx clipit -f md -f html https://example.com/article
+clipit -f md -f html https://example.com/article
 ```
 
 - **Set a custom User-Agent:**
 ```sh
-uvx clipit --user-agent "MyCustomAgent/1.0" https://example.com/article
+clipit --user-agent "MyCustomAgent/1.0" https://example.com/article
 ```
 
 - **Output markdown content to stdout:**
 ```sh
-uvx clipit -f stdout.md https://example.com/article
+clipit -f stdout.md https://example.com/article
 ```
 
 - **Output markdown content to clipboard (MacOS):**
 ```sh
-uvx clipit -f stdout.md https://example.com/article | pbcopy
+clipit -f stdout.md https://example.com/article | pbcopy
 ```
 
 - **Disable YAML front matter and include source URL:**
 ```sh
-uvx clipit --no-yaml-frontmatter --include-source https://example.com/article
+clipit --no-yaml-frontmatter --include-source https://example.com/article
 ```
 
 - **Save files in the working directory, without creating a domain subdirectory:**
 ```sh
-uvx clipit --no-create-domain-subdir https://example.com/article
+clipit --no-create-domain-subdir https://example.com/article
 ```
 
 ## Requirements

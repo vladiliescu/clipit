@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import pytest
+from clipit.clipper import Clipper
 from clipit.core.output_format import OutputFormat
-from clipit.grabber import Grabber
 
 
 @pytest.mark.parametrize(
@@ -19,9 +19,9 @@ from clipit.grabber import Grabber
 )
 def test_grab_outputs_match_requested_formats(requested_formats: list[str], expected_keys: set[OutputFormat]):
     url = "https://example.com/"
-    grabber = Grabber()
+    grabber = Clipper()
 
-    title, outputs = grabber.grab(
+    title, outputs = grabber.clip(
         url=url,
         use_readability_js=False,
         fallback_title="Untitled {date}",

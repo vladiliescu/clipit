@@ -1,8 +1,7 @@
 import json
 from urllib.parse import urlparse, urlunparse
 
-from clipit import ClipitError
-from clipit.core import RenderFlags
+from clipit.core import ClipitError, RenderFlags
 from clipit.core.downloader import download_html_content
 from clipit.core.output_format import OutputFormat, OutputFormatList
 from clipit.grabbers.base_grabber import BaseGrabber

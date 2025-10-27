@@ -1,6 +1,6 @@
 import click
 
-from clipit import ClipitError, Grabber, OutputFormat, __version__
+from clipit import ClipitError, Clipper, OutputFormat, __version__
 
 
 @click.command()
@@ -84,8 +84,8 @@ def main(
     Download a URL, convert it to Markdown/HTML with specified options, and save it to a file.
     """
     try:
-        grabber = Grabber(user_agent=user_agent)
-        grabber.grab_and_save(
+        grabber = Clipper(user_agent=user_agent)
+        grabber.clip_and_save(
             url=url,
             use_readability_js=use_readability_js,
             fallback_title=fallback_title,

@@ -4,8 +4,7 @@ from urllib.parse import urlparse
 
 import click
 
-from clipit import ClipitError
-from clipit.core import OutputFlags, OutputFormat
+from clipit.core import ClipitError, OutputFlags, OutputFormat
 
 
 def should_output_file(output_formats: dict[OutputFormat, str]) -> bool:

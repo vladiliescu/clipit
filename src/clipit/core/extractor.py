@@ -1,6 +1,6 @@
 from readabilipy import simple_json_from_html_string
 
-from clipit import ClipitError
+from clipit.core import ClipitError
 
 
 def extract_readable_content_and_title(html_content, use_readability_js):

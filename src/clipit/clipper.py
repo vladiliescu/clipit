@@ -6,11 +6,11 @@ from clipit.grabbers import BaseGrabber, RedditGrabber
 grabbers: list[BaseGrabber] = [RedditGrabber(), BaseGrabber()]
 
 
-class Grabber:
+class Clipper:
     def __init__(self, user_agent: str | None = None):
         self.user_agent = user_agent
 
-    def grab(
+    def clip(
         self,
         url: str,
         use_readability_js: bool,
@@ -33,7 +33,7 @@ class Grabber:
 
         return grabber.grab(url, self.user_agent, use_readability_js, fallback_title, render_flags, output_format_list)
 
-    def grab_and_save(
+    def clip_and_save(
         self,
         url: str,
         use_readability_js: bool,
@@ -45,7 +45,7 @@ class Grabber:
         create_domain_subdir: bool,
         overwrite: bool,
     ) -> None:
-        title, outputs = self.grab(
+        title, outputs = self.clip(
             url, use_readability_js, fallback_title, include_source, include_title, yaml_frontmatter, output_formats
         )
         output(title, outputs, url, create_domain_subdir, overwrite)

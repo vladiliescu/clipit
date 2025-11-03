@@ -1,6 +1,6 @@
 [project]
 name = "clipit"
-version = "1.0.1"
+version = "1.1.0"
 description = "Clipit is a library that allows you to download web pages, extract their readable content, convert it to Markdown, and save it locally."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -14,7 +14,15 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Typing :: Typed",
 ]
-dependencies = ["readabilipy==0.3.0", "markdownify==1.2.0", "PyYAML==6.0.3", "requests==2.32.5", "mdformat==0.7.22", "click>=8.2.0,<8.4"]
+dependencies = [
+    "readabilipy==0.3.0",
+    "markdownify==1.2.0",
+    "PyYAML==6.0.3",
+    "requests==2.32.5",
+    "mdformat==0.7.22",
+    "click>=8.2.0,<8.4",
+    "beautifulsoup4==4.14.2",
+]
 
 [project.urls]
 Homepage = "https://github.com/vladiliescu/clipit"
@@ -23,6 +31,13 @@ Repository = "https://github.com/vladiliescu/clipit"
 
 [project.scripts]
 clipit = "clipit.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = true
 
 [dependency-groups]
 # uv-only groups for local development; not published as pip extras

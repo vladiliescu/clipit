@@ -11,7 +11,6 @@ This project allows users to download web pages, extract their readable content,
 - tests: `uv run pytest`
 - app (local dev): `uvx --from . clipit [OPTIONS] URL`
 - app (after publishing): `uvx clipit [OPTIONS] URL`
-- legacy (still works): `uv run python clipit.py [OPTIONS] URL`
 
 ## Rules
 

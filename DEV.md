@@ -1,21 +1,18 @@
 ```sh
 
-# Install the project in editable mode
-uv pip install -e .
+# Install the project in editable mode with all dependencies
+uv sync
 
 # Run tests
 uv run pytest
 
-# Run app in dev-mode
+# Run app in dev-mode (recommended - uses editable install, no cache issues)
+uv run clipit --help
+uv run clipit [OPTIONS] URL
 
-# Using uvx console script (local project)
+# Alternative: Using uvx (requires cache clearing after code changes)
 uvx --from . clipit --help
-
 uvx --from . clipit [OPTIONS] URL
 
-# Legacy shim (still works during migration)
-uv run python clipit.py --help
-
-uv run python clipit.py [OPTIONS] URL
 
 ```

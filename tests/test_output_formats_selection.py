@@ -21,7 +21,7 @@ def test_grab_outputs_match_requested_formats(requested_formats: list[str], expe
     url = "https://example.com/"
     grabber = Clipper()
 
-    title, outputs = grabber.clip(
+    title, outputs, images = grabber.clip(
         url=url,
         use_readability_js=False,
         fallback_title="Untitled {date}",

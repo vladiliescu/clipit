@@ -80,16 +80,14 @@ def create_output_dir(url):
 
 
 def save_images(output_dir: Path, images: list[tuple[str, bytes]], overwrite: bool) -> None:
-    images_dir = output_dir / "images"
-    images_dir.mkdir(parents=True, exist_ok=True)
-
     for filename, image_bytes in images:
-        image_path = images_dir / filename
+        image_path = output_dir / filename
         if not overwrite and image_path.exists():
             click.echo(f"Image {image_path} already exists. Use --overwrite to replace it.")
             continue
 
         try:
+            image_path.parent.mkdir(parents=True, exist_ok=True)
             with open(image_path, "wb") as image_file:
                 image_file.write(image_bytes)
             click.echo(f"Saved image to {image_path}")

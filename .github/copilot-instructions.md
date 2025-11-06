@@ -9,7 +9,7 @@ This project allows users to download web pages, extract their readable content,
 ## Running
 
 - tests: `uv run pytest`
-- app (local dev): `uvx --from . clipit [OPTIONS] URL`
+- app (local dev): `uv run clipit [OPTIONS] URL`
 - app (after publishing): `uvx clipit [OPTIONS] URL`
 
 ## Rules
@@ -20,7 +20,7 @@ The project abides by the following rules
 - The CLI tool is run using `uvx --from . clipit` during local development
 - Package name on PyPI: `clipit`, console script name: `clipit`, Python package: `clipit`
 - `uv` is already available.
-- Every modification you make MUST be validated by running `cd src/clipit && uvx ty check . && uv run ruff check`.
+- Every modification you make MUST be validated by running `sh check-style-and-types-and-tests.sh`.
 
 # Coding Assistant (Copilot)
 

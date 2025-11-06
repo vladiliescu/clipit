@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from urllib.parse import urljoin, urlparse
+from urllib.parse import quote, urljoin, urlparse
 
 from bs4 import BeautifulSoup
 
@@ -50,7 +50,12 @@ def _generate_image_filename(url: str, used_filenames: set[str]) -> str:
     return candidate
 
 
-def process_images(html_content: str, base_url: str, user_agent: str | None) -> tuple[str, list[tuple[str, bytes]]]:
+def process_images(
+    html_content: str, title: str, base_url: str, user_agent: str | None
+) -> tuple[str, list[tuple[str, bytes]]]:
+    directory = sanitize_filename(title)
+    if not directory:
+        directory = "images"
     soup = BeautifulSoup(html_content, "html.parser")
     images: list[tuple[str, bytes]] = []
     image_url_to_filename: dict[str, str] = {}
@@ -66,7 +71,9 @@ def process_images(html_content: str, base_url: str, user_agent: str | None) -> 
         absolute_url = urljoin(base_url, original_src)
 
         if absolute_url in image_url_to_filename:
-            img_tag["src"] = f"images/{image_url_to_filename[absolute_url]}"
+            # URL-encode the path to prevent mdformat from escaping brackets
+            encoded_path = quote(f"{directory}/{image_url_to_filename[absolute_url]}", safe="/")
+            img_tag["src"] = encoded_path
             continue
 
         image_bytes = download_image(absolute_url, user_agent)
@@ -78,7 +85,8 @@ def process_images(html_content: str, base_url: str, user_agent: str | None) -> 
         used_filenames.add(filename)
 
         image_url_to_filename[absolute_url] = filename
-        images.append((filename, image_bytes))
-        img_tag["src"] = f"images/{filename}"
+        images.append((f"{directory}/{filename}", image_bytes))
+        encoded_path = quote(f"{directory}/{filename}", safe="/")
+        img_tag["src"] = encoded_path
 
     return str(soup), images

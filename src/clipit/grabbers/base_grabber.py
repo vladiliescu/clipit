@@ -39,9 +39,8 @@ class BaseGrabber:
         should_download_images = download_images and any(fmt.is_file_output() for fmt in output_formats)
 
         if should_download_images:
-            processed_html, downloaded_images = process_images(html_readable_content, url, user_agent)
+            processed_html, images = process_images(html_readable_content, title, url, user_agent)
             html_readable_content = processed_html
-            images = downloaded_images
 
         if output_formats.should_output_readable_html():
             outputs[OutputFormat.READABLE_HTML] = html_readable_content

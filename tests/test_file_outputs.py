@@ -35,7 +35,7 @@ def test_output_saves_images_to_default_subfolder(tmp_path, monkeypatch):
     )
 
     assert (tmp_path / "Sample.md").exists()
-    assert (tmp_path / "images" / "sample.png").exists()
+    assert (tmp_path / "sample.png").exists()
 
 
 def test_output_saves_images_inside_domain_subdir(tmp_path, monkeypatch):
@@ -55,4 +55,4 @@ def test_output_saves_images_inside_domain_subdir(tmp_path, monkeypatch):
 
     expected_dir = tmp_path / "example.com"
     assert (expected_dir / "Sample.md").exists()
-    assert (expected_dir / "images" / "sample.png").exists()
+    assert (expected_dir / "sample.png").exists()

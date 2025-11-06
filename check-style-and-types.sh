@@ -1,0 +1,1 @@
+ uvx ty check && uv run ruff check --fix

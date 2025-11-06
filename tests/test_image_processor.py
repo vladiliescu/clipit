@@ -42,11 +42,11 @@ def test_generate_image_filename_handles_duplicates_and_extensions(monkeypatch):
 
     monkeypatch.setattr("clipit.core.image_processor.download_image", fake_download)
 
-    processed_html, images = process_images(html, "https://example.com/page", user_agent=None)
+    processed_html, images = process_images(html, "test-title", "https://example.com/page", user_agent=None)
 
     filenames = [filename for filename, _ in images]
 
-    assert filenames == ["image.PNG", "image_1.PNG", "banner.jpg"]
+    assert filenames == ["test-title/image.PNG", "test-title/image_1.PNG", "test-title/banner.jpg"]
 
 
 def test_process_images_downloads_once_and_rewrites_src(monkeypatch):
@@ -68,7 +68,7 @@ def test_process_images_downloads_once_and_rewrites_src(monkeypatch):
 
     monkeypatch.setattr("clipit.core.image_processor.download_image", fake_download)
 
-    processed_html, images = process_images(html, "https://example.com/page", user_agent=None)
+    processed_html, images = process_images(html, "test-title", "https://example.com/page", user_agent=None)
 
     soup = BeautifulSoup(processed_html, "html.parser")
     rewritten_sources = [img["src"] for img in soup.find_all("img")]
@@ -78,11 +78,11 @@ def test_process_images_downloads_once_and_rewrites_src(monkeypatch):
         "https://cdn.example.com/logo",
     ]
 
-    assert rewritten_sources == ["images/photo.jpg", "images/photo.jpg", "images/logo.jpg"]
+    assert rewritten_sources == ["test-title/photo.jpg", "test-title/photo.jpg", "test-title/logo.jpg"]
 
     assert images == [
-        ("photo.jpg", b"bytes-for-https://example.com/assets/photo.jpg"),
-        ("logo.jpg", b"bytes-for-https://cdn.example.com/logo"),
+        ("test-title/photo.jpg", b"bytes-for-https://example.com/assets/photo.jpg"),
+        ("test-title/logo.jpg", b"bytes-for-https://cdn.example.com/logo"),
     ]
 
 
@@ -103,9 +103,9 @@ def test_process_images_preserves_original_src_on_failure(monkeypatch):
 
     monkeypatch.setattr("clipit.core.image_processor.download_image", fake_download)
 
-    processed_html, images = process_images(html, "https://example.com/page", user_agent=None)
+    processed_html, images = process_images(html, "test-title", "https://example.com/page", user_agent=None)
     soup = BeautifulSoup(processed_html, "html.parser")
     rewritten_sources = [img["src"] for img in soup.find_all("img")]
 
-    assert rewritten_sources == ["/assets/photo.jpg", "images/fallback.png"]
-    assert images == [("fallback.png", b"image-bytes")]
+    assert rewritten_sources == ["/assets/photo.jpg", "test-title/fallback.png"]
+    assert images == [("test-title/fallback.png", b"image-bytes")]

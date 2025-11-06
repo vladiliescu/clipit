@@ -31,7 +31,7 @@ def extract_image_urls(html_content: str, base_url: str) -> list[str]:
     return image_urls
 
 
-def generate_image_filename(url: str, used_filenames: set[str]) -> str:
+def _generate_image_filename(url: str, used_filenames: set[str]) -> str:
     parsed = urlparse(url)
     path = Path(parsed.path)
     stem = path.stem or "image"
@@ -74,7 +74,7 @@ def process_images(html_content: str, base_url: str, user_agent: str | None) -> 
             # TODO: log warning about failed download
             continue
 
-        filename = generate_image_filename(absolute_url, used_filenames)
+        filename = _generate_image_filename(absolute_url, used_filenames)
         used_filenames.add(filename)
 
         image_url_to_filename[absolute_url] = filename

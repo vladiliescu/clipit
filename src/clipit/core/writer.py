@@ -1,17 +1,24 @@
-import re
 from pathlib import Path
 from urllib.parse import urlparse
 
 import click
 
 from clipit.core import ClipitError, OutputFlags, OutputFormat
+from clipit.core.misc import sanitize_filename
 
 
 def should_output_file(output_formats: dict[OutputFormat, str]) -> bool:
     return any(fmt.is_file_output() for fmt in output_formats)
 
 
-def output(title: str, outputs: dict[OutputFormat, str], url: str, create_domain_subdir: bool, overwrite: bool):
+def output(
+    title: str,
+    outputs: dict[OutputFormat, str],
+    url: str,
+    create_domain_subdir: bool,
+    overwrite: bool,
+    images: list[tuple[str, bytes]] | None = None,
+):
     output_dir = None
     safe_title = None
 
@@ -27,6 +34,9 @@ def output(title: str, outputs: dict[OutputFormat, str], url: str, create_domain
             output_dir = Path(".")
         safe_title = sanitize_filename(title)
 
+        if images:
+            save_images(output_dir, images, output_flags.overwrite)
+
     for format, output in outputs.items():
         if format.is_file_output():
             # output_dir and safe_title are only defined if we're saving to a file
@@ -35,28 +45,6 @@ def output(title: str, outputs: dict[OutputFormat, str], url: str, create_domain
         else:
             if output is not None:
                 click.echo(output)
-
-
-def sanitize_filename(filename):
-    # Remove Obsidian-specific characters
-    sanitized = re.sub(r"[#|\^\[\]]", "", filename)
-
-    # Most conservative approach - remove all problematic characters including control characters
-    sanitized = re.sub(r'[<>:"/\\|?*\x00-\x1F]', "", sanitized)
-
-    # Handle Windows reserved filenames
-    sanitized = re.sub(r"^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$", r"_\1\2", sanitized, flags=re.IGNORECASE)
-
-    # Remove trailing spaces and periods
-    sanitized = re.sub(r"[\s.]+$", "", sanitized)
-
-    # Remove leading periods
-    sanitized = re.sub(r"^\.+", "", sanitized)
-
-    # Trim to 240 characters to leave room for extensions
-    sanitized = sanitized[:240]
-
-    return sanitized
 
 
 def write_to_file(
@@ -89,3 +77,21 @@ def create_output_dir(url):
     output_dir.mkdir(exist_ok=True, parents=True)
 
     return output_dir
+
+
+def save_images(output_dir: Path, images: list[tuple[str, bytes]], overwrite: bool) -> None:
+    images_dir = output_dir / "images"
+    images_dir.mkdir(parents=True, exist_ok=True)
+
+    for filename, image_bytes in images:
+        image_path = images_dir / filename
+        if not overwrite and image_path.exists():
+            click.echo(f"Image {image_path} already exists. Use --overwrite to replace it.")
+            continue
+
+        try:
+            with open(image_path, "wb") as image_file:
+                image_file.write(image_bytes)
+            click.echo(f"Saved image to {image_path}")
+        except Exception as exc:
+            click.echo(f"Failed to save image {image_path}: {exc}")

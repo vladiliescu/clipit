@@ -59,6 +59,12 @@ from clipit import ClipitError, Clipper, OutputFormat, __version__
     show_default=True,
 )
 @click.option(
+    "--download-images/--no-download-images",
+    default=False,
+    help="Download images referenced in the page and update links to point to local copies.",
+    show_default=True,
+)
+@click.option(
     "-f",
     "--format",
     "output_formats",
@@ -79,13 +85,14 @@ def main(
     create_domain_subdir: bool,
     output_formats: list[str],
     overwrite: bool,
+    download_images: bool,
 ) -> None:
     """
     Download a URL, convert it to Markdown/HTML with specified options, and save it to a file.
     """
     try:
-        grabber = Clipper(user_agent=user_agent)
-        grabber.clip_and_save(
+        clipper = Clipper(user_agent=user_agent)
+        clipper.clip_and_save(
             url=url,
             use_readability_js=use_readability_js,
             fallback_title=fallback_title,
@@ -95,6 +102,7 @@ def main(
             output_formats=list(output_formats),
             create_domain_subdir=create_domain_subdir,
             overwrite=overwrite,
+            download_images=download_images,
         )
     except ClipitError as e:
         raise click.ClickException(str(e))

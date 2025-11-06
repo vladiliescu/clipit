@@ -3,6 +3,7 @@ from datetime import datetime
 from clipit.core import OutputFormat, OutputFormatList, RenderFlags
 from clipit.core.downloader import download_html_content
 from clipit.core.extractor import extract_readable_content_and_title
+from clipit.core.image_processor import process_images
 from clipit.core.markdown_converter import (
     convert_to_markdown,
     try_add_yaml_frontmatter,
@@ -23,8 +24,10 @@ class BaseGrabber:
         fallback_title: str,
         render_flags: RenderFlags,
         output_formats: OutputFormatList,
-    ) -> tuple[str, dict[OutputFormat, str]]:
+        download_images: bool,
+    ) -> tuple[str, dict[OutputFormat, str], list[tuple[str, bytes]]]:
         outputs = {}
+        images: list[tuple[str, bytes]] = []
 
         html_content = download_html_content(url, user_agent)
         if output_formats.should_output_raw_html():
@@ -32,6 +35,13 @@ class BaseGrabber:
 
         html_readable_content, title = extract_readable_content_and_title(html_content, use_readability_js)
         title = self.post_process_title(title, fallback_title)
+
+        should_download_images = download_images and any(fmt.is_file_output() for fmt in output_formats)
+
+        if should_download_images:
+            processed_html, downloaded_images = process_images(html_readable_content, url, user_agent)
+            html_readable_content = processed_html
+            images = downloaded_images
 
         if output_formats.should_output_readable_html():
             outputs[OutputFormat.READABLE_HTML] = html_readable_content
@@ -46,7 +56,7 @@ class BaseGrabber:
             if output_formats.should_output_markdown_stdout():
                 outputs[OutputFormat.STDOUT_MD] = markdown_content
 
-        return title, outputs
+        return title, outputs, images
 
     def render_markdown(self, markdown_content):
         return markdown_content

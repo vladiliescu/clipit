@@ -5,15 +5,15 @@ from clipit.core import ClipitError
 
 
 def download_html_content(url, user_agent: str | None) -> str:
+    request_headers = {
+        "User-Agent": user_agent,
+        "Accept-Language": "en-US,en;q=0.9",
+    }
+
+    if user_agent is None:
+        del request_headers["User-Agent"]
+
     try:
-        request_headers = {
-            "User-Agent": user_agent,
-            "Accept-Language": "en-US,en;q=0.9",
-        }
-
-        if user_agent is None:
-            del request_headers["User-Agent"]
-
         response = requests.get(url, headers=request_headers)
         response.raise_for_status()
         html_content = response.content.decode("utf-8")
@@ -21,3 +21,21 @@ def download_html_content(url, user_agent: str | None) -> str:
         raise ClipitError(f"Error downloading {url}: {e}")
 
     return html_content
+
+
+def download_image(url: str, user_agent: str | None) -> bytes | None:
+    request_headers = {
+        "User-Agent": user_agent,
+        "Accept": "image/*",
+    }
+
+    if user_agent is None:
+        del request_headers["User-Agent"]
+
+    try:
+        response = requests.get(url, headers=request_headers, timeout=10)
+        response.raise_for_status()
+    except RequestException:
+        return None
+
+    return response.content

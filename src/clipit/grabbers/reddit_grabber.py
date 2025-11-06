@@ -20,7 +20,8 @@ class RedditGrabber(BaseGrabber):
         fallback_title: str,
         render_flags: RenderFlags,
         output_formats: OutputFormatList,
-    ) -> tuple[str, dict[OutputFormat, str]]:
+        _download_images: bool,
+    ) -> tuple[str, dict[OutputFormat, str], list[tuple[str, bytes]]]:
         if (
             output_formats.should_output_raw_html()
             or output_formats.should_output_readable_html()
@@ -42,7 +43,7 @@ class RedditGrabber(BaseGrabber):
         outputs[OutputFormat.MD] = markdown_content
         outputs[OutputFormat.STDOUT_MD] = markdown_content
 
-        return title, outputs
+        return title, outputs, []
 
     def _convert_to_json_url(self, url):
         parsed_url = urlparse(url)

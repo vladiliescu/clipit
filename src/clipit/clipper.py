@@ -19,7 +19,8 @@ class Clipper:
         include_title: bool,
         yaml_frontmatter: bool,
         output_formats: list[str],
-    ) -> tuple[str, dict[OutputFormat, str]]:
+        download_images: bool = False,
+    ) -> tuple[str, dict[OutputFormat, str], list[tuple[str, bytes]]]:
         grabber = next((g for g in grabbers if g.can_handle(url)), None)
         if grabber is None:
             raise ValueError("No grabber found for the given URL.")
@@ -31,7 +32,9 @@ class Clipper:
             yaml_frontmatter=yaml_frontmatter,
         )
 
-        return grabber.grab(url, self.user_agent, use_readability_js, fallback_title, render_flags, output_format_list)
+        return grabber.grab(
+            url, self.user_agent, use_readability_js, fallback_title, render_flags, output_format_list, download_images
+        )
 
     def clip_and_save(
         self,
@@ -44,8 +47,23 @@ class Clipper:
         output_formats: list[str],
         create_domain_subdir: bool,
         overwrite: bool,
+        download_images: bool = False,
     ) -> None:
-        title, outputs = self.clip(
-            url, use_readability_js, fallback_title, include_source, include_title, yaml_frontmatter, output_formats
+        title, outputs, images = self.clip(
+            url,
+            use_readability_js,
+            fallback_title,
+            include_source,
+            include_title,
+            yaml_frontmatter,
+            output_formats,
+            download_images,
         )
-        output(title, outputs, url, create_domain_subdir, overwrite)
+        output(
+            title,
+            outputs,
+            url,
+            create_domain_subdir,
+            overwrite,
+            images=images,
+        )

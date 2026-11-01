@@ -6,7 +6,7 @@ from requests import RequestException
 from clipit.core import DownloadError
 
 
-def download_html_content(url, user_agent: str | None) -> str:
+def download_html_content(url, user_agent: str | None, accept: str | None = None) -> str:
     request_headers = {
         "User-Agent": user_agent,
         "Accept-Language": "en-US,en;q=0.9",
@@ -14,6 +14,9 @@ def download_html_content(url, user_agent: str | None) -> str:
 
     if user_agent is None:
         del request_headers["User-Agent"]
+
+    if accept is not None:
+        request_headers["Accept"] = accept
 
     try:
         response = requests.get(url, headers=request_headers)

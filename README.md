@@ -20,6 +20,7 @@ I'm using it to save bookmarks in [Obsidian](https://obsidian.md/), so you'll se
 - **Customizable output**: Include YAML front matter, page titles, source links, and control the output directory structure. This is especially useful for integrating with knowledge management systems such as [Obsidian](https://obsidian.md/)
 - **Uses Readability.js**: Extracts the main content from web pages for cleaner outputs (requires Node.js to be installed)
 - **Supports Reddit posts**: Clipit now handles Reddit (both text & link) posts (including comments)
+- **Supports GitHub repositories**: Saves the raw README from the default branch when bookmarking a repository homepage as Markdown, without GitHub's navigation or page layout.
 
 ## Installation
 
@@ -56,6 +57,7 @@ clipit [OPTIONS] URL
 - `--title TEXT`: Title for the bookmark fallback. Prompts in interactive terminals when omitted; otherwise uses the URL hostname.
 - `--notes TEXT`: Markdown notes for the bookmark fallback. Prompts in interactive terminals when omitted; otherwise leaves notes empty.
 - `--use-readability-js / --no-use-readability-js`: Use Readability.js for processing pages. Disabling it will result in **some** processing courtesy of [ReadabiliPy](https://github.com/alan-turing-institute/ReadabiliPy), but it doesn't look so great to be honest (requires Node.js, default: `enabled`).
+- `--use-readme / --no-use-readme`: Use the repository README for Markdown where supported, currently GitHub repository homepages (default: `enabled`). Disable it to use webpage extraction instead. HTML outputs always use webpage extraction, including when requested alongside Markdown.
 - `--create-domain-subdir / --no-create-domain-subdir`: Save the resulting files in a subdirectory named after the domain. Useful when saving a **lot** of bookmarks in the same Obsidian vault (default: `enabled`).
 - `--overwrite / --no-overwrite`: Overwrite existing files (default: `disabled`).
 - `--download-images / --no-download-images`: Download article images and use local references in Markdown and readable HTML (default: `disabled`). Images are stored in a directory named after the article, beside the saved document.
@@ -64,6 +66,24 @@ clipit [OPTIONS] URL
 
 
 ### Examples
+
+- **Bookmark a GitHub repository using its README:**
+```sh
+clipit https://github.com/vladiliescu/clipit
+```
+
+Clipit uses GitHub's README endpoint to find the file on the repository's default branch, including different README filenames and locations. Markdown and plain-text README bodies are preserved, with the usual title, source, and YAML front matter options; the bookmark title is `owner/repo` and the source remains the repository URL. Other README formats, such as reStructuredText, are converted from GitHub's rendered README to Markdown. Relative links in the raw README are left unchanged. Other GitHub pages, such as files, issues, and branch views, still use webpage extraction.
+
+With `--download-images`, Clipit downloads images from GitHub's rendered README and converts that content back to Markdown with local image links. This can change Markdown formatting. Stdout-only output keeps the raw README and does not download images. Mixed Markdown/HTML commands use the README for Markdown and the webpage for HTML; `raw.html` always retains the original webpage HTML.
+
+If no README is found, Clipit warns and falls back to webpage extraction. Other download errors, such as GitHub API rate limits, retain the normal download-error and `--bookmark-on-failure` behavior.
+
+- **Use webpage extraction for a GitHub repository instead:**
+```sh
+clipit --no-use-readme https://github.com/vladiliescu/clipit
+```
+
+The library's `clip()` and `clip_and_save()` methods accept `use_readme=False` for the same opt-out.
 
 - **Save article images in a separate attachments directory:**
 ```sh

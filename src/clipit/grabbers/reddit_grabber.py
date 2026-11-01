@@ -9,7 +9,7 @@ from clipit.grabbers.base_grabber import BaseGrabber
 
 
 class RedditGrabber(BaseGrabber):
-    def can_handle(self, url: str) -> bool:
+    def can_handle(self, url: str, *, use_readme: bool = True) -> bool:
         domain = urlparse(url).netloc.lower()
         return domain == "www.reddit.com" or domain == "old.reddit.com"
 

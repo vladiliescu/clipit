@@ -60,6 +60,12 @@ from clipit.core.writer import output
     show_default=True,
 )
 @click.option(
+    "--use-readme/--no-use-readme",
+    default=True,
+    help="Use the repository README for Markdown where supported. Disable to extract the webpage instead.",
+    show_default=True,
+)
+@click.option(
     "--create-domain-subdir/--no-create-domain-subdir",
     default=True,
     help="Save the resulting file(s) in a subdirectory named after the domain.",
@@ -98,6 +104,7 @@ def main(
     notes: str | None,
     user_agent: str,
     use_readability_js: bool,
+    use_readme: bool,
     yaml_frontmatter: bool,
     include_title: bool,
     include_source: bool,
@@ -126,6 +133,7 @@ def main(
                 overwrite=overwrite,
                 download_images=download_images,
                 download_folder=download_folder,
+                use_readme=use_readme,
             )
         except DownloadError as e:
             interactive = sys.stdin.isatty() and sys.stderr.isatty()

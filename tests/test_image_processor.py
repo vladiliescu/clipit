@@ -79,6 +79,29 @@ def test_process_images_downloads_once_and_rewrites_src(image_server):
     ]
 
 
+def test_process_images_shares_downloads_and_avoids_filename_collisions_across_outputs(image_server):
+    base_url, directory, received_requests = image_server
+    image_url_to_filename = {}
+    _, first_images = process_images(
+        '<img src="/converted.png">', "test-title", base_url, None, image_url_to_filename=image_url_to_filename
+    )
+    processed_html, second_images = process_images(
+        '<img src="/converted.png"><img src="/converted.png?variant=1">',
+        "test-title",
+        base_url,
+        None,
+        image_url_to_filename=image_url_to_filename,
+    )
+
+    assert received_requests == ["/converted.png", "/converted.png?variant=1"]
+    assert first_images == [("test-title/converted.jpg", (directory / "converted.png").read_bytes())]
+    assert second_images == [("test-title/converted_1.jpg", (directory / "converted.png").read_bytes())]
+    assert [str(image["src"]) for image in BeautifulSoup(processed_html, "html.parser").find_all("img")] == [
+        "test-title/converted.jpg",
+        "test-title/converted_1.jpg",
+    ]
+
+
 def test_process_images_preserves_remote_src_on_failure(image_server, caplog):
     html = """
     <html>

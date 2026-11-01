@@ -4,9 +4,9 @@ from clipit.core import OutputFormat, OutputFormatList
 from clipit.core.dtos import RenderFlags
 from clipit.core.paths import get_output_directory
 from clipit.core.writer import output
-from clipit.grabbers import BaseGrabber, RedditGrabber
+from clipit.grabbers import BaseGrabber, GitHubGrabber, RedditGrabber
 
-grabbers: list[BaseGrabber] = [RedditGrabber(), BaseGrabber()]
+grabbers: list[BaseGrabber] = [RedditGrabber(), GitHubGrabber(), BaseGrabber()]
 
 
 class Clipper:
@@ -25,8 +25,9 @@ class Clipper:
         download_images: bool = False,
         download_folder: str | None = None,
         output_dir: Path = Path("."),
+        use_readme: bool = True,
     ) -> tuple[str, dict[OutputFormat, str], list[tuple[str, bytes]]]:
-        grabber = next((g for g in grabbers if g.can_handle(url)), None)
+        grabber = next((g for g in grabbers if g.can_handle(url, use_readme=use_readme)), None)
         if grabber is None:
             raise ValueError("No grabber found for the given URL.")
 
@@ -62,6 +63,7 @@ class Clipper:
         overwrite: bool,
         download_images: bool = False,
         download_folder: str | None = None,
+        use_readme: bool = True,
     ) -> None:
         output_dir = get_output_directory(url, create_domain_subdir)
         title, outputs, images = self.clip(
@@ -75,6 +77,7 @@ class Clipper:
             download_images,
             download_folder,
             output_dir,
+            use_readme,
         )
         output(
             title,

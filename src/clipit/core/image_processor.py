@@ -85,14 +85,20 @@ def _get_best_image_url(img_tag, base_url: str) -> str | None:
 
 
 def process_images(
-    html_content: str, title: str, base_url: str, user_agent: str | None, directory: Path | None = None
+    html_content: str,
+    title: str,
+    base_url: str,
+    user_agent: str | None,
+    directory: Path | None = None,
+    image_url_to_filename: dict[str, str] | None = None,
 ) -> tuple[str, list[tuple[str, bytes]]]:
     if directory is None:
         directory = Path(sanitize_filename(title) or "Untitled")
     soup = BeautifulSoup(html_content, "html.parser")
     images: list[tuple[str, bytes]] = []
-    image_url_to_filename: dict[str, str] = {}
-    used_filenames: set[str] = set()
+    if image_url_to_filename is None:
+        image_url_to_filename = {}
+    used_filenames = set(image_url_to_filename.values())
 
     for img_tag in soup.find_all("img"):
         original_src = img_tag.get("src")

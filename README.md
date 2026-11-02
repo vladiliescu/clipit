@@ -21,6 +21,7 @@ I'm using it to save bookmarks in [Obsidian](https://obsidian.md/), so you'll se
 - **Uses Readability.js**: Extracts the main content from web pages for cleaner outputs (requires Node.js to be installed)
 - **Supports Reddit posts**: Clipit now handles Reddit (both text & link) posts (including comments)
 - **Supports GitHub repositories**: Saves the raw README from the default branch when bookmarking a repository homepage as Markdown, without GitHub's navigation or page layout.
+- **Supports Hugging Face models and datasets**: Saves the raw model or dataset card README when bookmarking a repository homepage as Markdown.
 
 ## Installation
 
@@ -57,7 +58,7 @@ clipit [OPTIONS] URL
 - `--title TEXT`: Title for the bookmark fallback. Prompts in interactive terminals when omitted; otherwise uses the URL hostname.
 - `--notes TEXT`: Markdown notes for the bookmark fallback. Prompts in interactive terminals when omitted; otherwise leaves notes empty.
 - `--use-readability-js / --no-use-readability-js`: Use Readability.js for processing pages. Disabling it will result in **some** processing courtesy of [ReadabiliPy](https://github.com/alan-turing-institute/ReadabiliPy), but it doesn't look so great to be honest (requires Node.js, default: `enabled`).
-- `--use-readme / --no-use-readme`: Use the repository README for Markdown where supported, currently GitHub repository homepages (default: `enabled`). Disable it to use webpage extraction instead. HTML outputs always use webpage extraction, including when requested alongside Markdown.
+- `--use-readme / --no-use-readme`: Use the repository README for Markdown where supported, currently GitHub repositories and Hugging Face model and dataset repository homepages (default: `enabled`). Disable it to use webpage extraction instead. HTML outputs always use webpage extraction, including when requested alongside Markdown.
 - `--create-domain-subdir / --no-create-domain-subdir`: Save the resulting files in a subdirectory named after the domain. Useful when saving a **lot** of bookmarks in the same Obsidian vault (default: `enabled`).
 - `--overwrite / --no-overwrite`: Overwrite existing files (default: `disabled`).
 - `--download-images / --no-download-images`: Download article images and use local references in Markdown and readable HTML (default: `disabled`). Images are stored in a directory named after the article, beside the saved document.
@@ -84,6 +85,20 @@ clipit --no-use-readme https://github.com/vladiliescu/clipit
 ```
 
 The library's `clip()` and `clip_and_save()` methods accept `use_readme=False` for the same opt-out.
+
+- **Bookmark a Hugging Face model or dataset using its README:**
+```sh
+clipit https://huggingface.co/NeuML/pubmedbert-base-embeddings
+clipit https://huggingface.co/datasets/qiaojin/PubMedQA
+```
+
+Clipit downloads the card's `README.md` from Hugging Face's default `main` revision. It handles repository homepages in the forms `/owner/model` and `/datasets/owner/dataset`, including `hf.co` links. Files, branch views, discussions, profiles, documentation, collections, Spaces, and single-name legacy repository links keep using webpage extraction.
+
+Raw README content, including its original Hub YAML metadata and relative links, is preserved. Clipit's title, source, and YAML options still apply as usual; the Hub YAML remains part of the source content and is not merged into Clipit's bookmark metadata. `--no-yaml-frontmatter` disables only Clipit's metadata, not metadata already in the README. Titles are `owner/model` or `datasets/owner/dataset`, so model and dataset bookmarks with the same name have distinct filenames. The source remains the original repository URL.
+
+With `--download-images`, Clipit processes the rendered card, keeps its original Hub YAML, and converts the card back to Markdown with local image links. This can change Markdown formatting. Stdout-only output keeps the raw README and does not download images. Mixed Markdown/HTML output uses the card for Markdown and the webpage for HTML; raw HTML is unchanged.
+
+A confirmed missing README warns and falls back to webpage extraction. Access failures, rate limits, and other download errors keep normal error handling and `--bookmark-on-failure`. Use the existing `--no-use-readme` option or library `use_readme=False` to opt out.
 
 - **Save article images in a separate attachments directory:**
 ```sh

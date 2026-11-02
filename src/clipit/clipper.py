@@ -4,9 +4,9 @@ from clipit.core import OutputFormat, OutputFormatList
 from clipit.core.dtos import RenderFlags
 from clipit.core.paths import get_output_directory
 from clipit.core.writer import output
-from clipit.grabbers import BaseGrabber, GitHubGrabber, RedditGrabber
+from clipit.grabbers import BaseGrabber, GitHubGrabber, HuggingFaceGrabber, RedditGrabber
 
-grabbers: list[BaseGrabber] = [RedditGrabber(), GitHubGrabber(), BaseGrabber()]
+grabbers: list[BaseGrabber] = [RedditGrabber(), GitHubGrabber(), HuggingFaceGrabber(), BaseGrabber()]
 
 
 class Clipper:

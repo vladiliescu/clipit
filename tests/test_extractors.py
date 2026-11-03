@@ -1,4 +1,3 @@
-import json
 import shutil
 from pathlib import Path
 
@@ -11,14 +10,14 @@ from clipit.core.readabilipy_runtime import ensure_readabilipy_node_runtime
 
 @pytest.mark.parametrize("page", ["example-domain", "boring-table"])
 @pytest.mark.parametrize("use_javascript", [False, True], ids=["python", "javascript"])
-def test_saved_pages_preserve_real_extraction_outputs(page_server, page, use_javascript):
+def test_saved_pages_preserve_real_extraction_outputs(page_server, saved_page_expectations, page, use_javascript):
     if use_javascript:
         if shutil.which("node") is None or shutil.which("npm") is None:
             pytest.skip("Node.js and npm are required for JavaScript extraction")
         assert ensure_readabilipy_node_runtime(), "The installed JavaScript runtime must work, not silently fall back"
 
     fixtures = Path(__file__).parent / "fixtures"
-    expected = json.loads((fixtures / f"{page}.json").read_text())["javascript" if use_javascript else "python"]
+    expected = saved_page_expectations[page]["javascript" if use_javascript else "python"]
     title, outputs, images = Clipper().clip(
         url=f"{page_server}/{page}.html",
         use_readability_js=use_javascript,
@@ -39,7 +38,7 @@ def test_saved_pages_preserve_real_extraction_outputs(page_server, page, use_jav
     assert images == []
 
 
-def test_saved_page_preserves_markdown_metadata(page_server):
+def test_saved_page_preserves_markdown_metadata(page_server, saved_page_expectations):
     url = f"{page_server}/example-domain.html"
     title, outputs, _ = Clipper().clip(
         url=url,
@@ -53,7 +52,7 @@ def test_saved_page_preserves_markdown_metadata(page_server):
 
     metadata_text, body = outputs[OutputFormat.MD].split("---", 2)[1:]
     metadata = yaml.safe_load(metadata_text)
-    expected = json.loads((Path(__file__).parent / "fixtures" / "example-domain.json").read_text())["python"]
+    expected = saved_page_expectations["example-domain"]["python"]
     assert metadata["title"] == title == expected["title"]
     assert metadata["source"] == url
     assert set(metadata) == {"title", "source", "date"}

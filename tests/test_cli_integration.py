@@ -1,12 +1,11 @@
-import json
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 
-def test_cli_preserves_saved_page_in_locked_environment(page_server, tmp_path):
-    expected = json.loads((Path(__file__).parent / "fixtures" / "example-domain.json").read_text())["python"]
+def test_cli_preserves_saved_page_in_locked_environment(page_server, tmp_path, saved_page_expectations):
+    expected = saved_page_expectations["example-domain"]["python"]
     proc = subprocess.run(
         [
             sys.executable,

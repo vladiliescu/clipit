@@ -1,13 +1,35 @@
 import gzip
+import json
 import shutil
 import ssl
 import subprocess
 from functools import partial
+from html.parser import HTMLParser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Thread
 
 import pytest
+
+
+@pytest.fixture(scope="session")
+def saved_page_expectations():
+    fixtures = Path(__file__).parent / "fixtures"
+    expected = {
+        page: json.loads((fixtures / f"{page}.json").read_text()) for page in ("example-domain", "boring-table")
+    }
+    title_data: list[str] = []
+
+    class TitleParser(HTMLParser):
+        def handle_data(self, data: str) -> None:
+            title_data.append(data)
+
+    # CPython gh-118350 makes markup inside <title> literal text.
+    TitleParser().feed("<title><p>Example Domain</p></title>")
+    assert title_data in (["Example Domain"], ["<p>Example Domain</p>"])
+    if title_data == ["<p>Example Domain</p>"]:
+        expected["example-domain"]["python"]["md"] = expected["example-domain"]["python"]["md_rcdata"]
+    return expected
 
 
 @pytest.fixture

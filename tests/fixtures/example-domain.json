@@ -2,7 +2,8 @@
   "python": {
     "title": "Example Domain",
     "html": "<div><title><p>Example Domain</p></title><body><p>This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.</p></body></div>",
-    "md": "Example Domain\n\nThis domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.\n"
+    "md": "Example Domain\n\nThis domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.\n",
+    "md_rcdata": "<p>Example Domain</p>\n\nThis domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.\n"
   },
   "javascript": {
     "title": "Example Domain",

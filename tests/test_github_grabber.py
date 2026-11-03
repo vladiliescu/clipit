@@ -35,24 +35,25 @@ def test_github_grabber_handles_repository_homepages(url):
 def test_github_grabber_declines_when_readme_is_disabled():
     grabber = GitHubGrabber()
 
-    assert not grabber.can_handle(HELLO_WORLD_URL, use_readme=False)
-    assert grabber.can_handle(HELLO_WORLD_URL, use_readme=True)
+    assert not grabber.can_handle_request(HELLO_WORLD_URL, use_readme=False)
+    assert grabber.can_handle_request(HELLO_WORLD_URL, use_readme=True)
+    assert grabber.can_handle_request(HELLO_WORLD_URL)
     assert grabber.can_handle(HELLO_WORLD_URL)
 
 
 @pytest.mark.parametrize("use_readme, expected_type", [(True, GitHubGrabber), (False, BaseGrabber)])
 def test_readme_preference_selects_the_applicable_grabber(use_readme, expected_type):
-    grabber = next(g for g in grabbers if g.can_handle(HELLO_WORLD_URL, use_readme=use_readme))
+    grabber = next(g for g in grabbers if g.can_handle_request(HELLO_WORLD_URL, use_readme=use_readme))
 
     assert type(grabber) is expected_type
 
 
 @pytest.mark.parametrize("use_readme", [True, False])
 def test_readme_preference_does_not_change_other_grabbers(use_readme):
-    assert BaseGrabber().can_handle(HELLO_WORLD_URL, use_readme=use_readme)
-    assert RedditGrabber().can_handle("https://www.reddit.com/r/python/", use_readme=use_readme)
-    assert RedditGrabber().can_handle("https://old.reddit.com/r/python/", use_readme=use_readme)
-    assert not RedditGrabber().can_handle(HELLO_WORLD_URL, use_readme=use_readme)
+    assert BaseGrabber().can_handle_request(HELLO_WORLD_URL, use_readme=use_readme)
+    assert RedditGrabber().can_handle_request("https://www.reddit.com/r/python/", use_readme=use_readme)
+    assert RedditGrabber().can_handle_request("https://old.reddit.com/r/python/", use_readme=use_readme)
+    assert not RedditGrabber().can_handle_request(HELLO_WORLD_URL, use_readme=use_readme)
 
 
 @pytest.mark.parametrize(

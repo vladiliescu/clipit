@@ -15,8 +15,11 @@ from clipit.core.paths import get_image_directory
 
 
 class BaseGrabber:
-    def can_handle(self, url: str, *, use_readme: bool = True) -> bool:
+    def can_handle(self, url: str) -> bool:
         return True
+
+    def can_handle_request(self, url: str, *, use_readme: bool = True) -> bool:
+        return self.can_handle(url)
 
     def grab(
         self,

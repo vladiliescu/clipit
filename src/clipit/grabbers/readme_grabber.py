@@ -20,6 +20,9 @@ class ReadmeSource:
 
 
 class ReadmeGrabber(BaseGrabber):
+    def can_handle_request(self, url: str, *, use_readme: bool = True) -> bool:
+        return use_readme and self.can_handle(url)
+
     def _get_readme(self, url: str, user_agent: str | None) -> ReadmeSource | None:
         raise NotImplementedError
 

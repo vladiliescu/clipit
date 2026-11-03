@@ -10,9 +10,7 @@ from clipit.grabbers.readme_grabber import ReadmeGrabber, ReadmeSource
 
 
 class HuggingFaceGrabber(ReadmeGrabber):
-    def can_handle(self, url: str, *, use_readme: bool = True) -> bool:
-        if not use_readme:
-            return False
+    def can_handle(self, url: str) -> bool:
         parsed = urlparse(url)
         if parsed.scheme not in {"http", "https"} or parsed.netloc.lower() not in {"huggingface.co", "hf.co"}:
             return False

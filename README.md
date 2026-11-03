@@ -154,6 +154,10 @@ clipit --no-yaml-frontmatter --include-source https://example.com/article
 clipit --no-create-domain-subdir https://example.com/article
 ```
 
+### Custom grabbers
+
+Custom `BaseGrabber` subclasses can keep implementing `can_handle(url)` for URL matching. `Clipper` selects grabbers through `can_handle_request(url, *, use_readme=True)`, which delegates to `can_handle(url)` by default. Override the request hook only when eligibility depends on request options; `ReadmeGrabber` uses it to decline requests with `use_readme=False`. Grabber instances are shared, so request options should not be stored on them.
+
 ## Requirements
 
 - [uv](https://docs.astral.sh/uv/) (for running the script)

@@ -89,15 +89,16 @@ def test_huggingface_grabber_leaves_other_urls_to_existing_grabbers(url):
 def test_huggingface_grabber_owns_readme_preference(url):
     grabber = HuggingFaceGrabber()
 
-    assert not grabber.can_handle(url, use_readme=False)
-    assert grabber.can_handle(url, use_readme=True)
+    assert not grabber.can_handle_request(url, use_readme=False)
+    assert grabber.can_handle_request(url, use_readme=True)
+    assert grabber.can_handle_request(url)
     assert grabber.can_handle(url)
 
 
 @pytest.mark.parametrize("url", [MODEL_URL, DATASET_URL])
 @pytest.mark.parametrize("use_readme, expected_type", [(True, HuggingFaceGrabber), (False, BaseGrabber)])
 def test_readme_preference_selects_huggingface_or_webpage_grabber(url, use_readme, expected_type):
-    grabber = next(g for g in grabbers if g.can_handle(url, use_readme=use_readme))
+    grabber = next(g for g in grabbers if g.can_handle_request(url, use_readme=use_readme))
 
     assert type(grabber) is expected_type
 

@@ -27,7 +27,7 @@ class Clipper:
         output_dir: Path = Path("."),
         use_readme: bool = True,
     ) -> tuple[str, dict[OutputFormat, str], list[tuple[str, bytes]]]:
-        grabber = next((g for g in grabbers if g.can_handle(url, use_readme=use_readme)), None)
+        grabber = next((g for g in grabbers if g.can_handle_request(url, use_readme=use_readme)), None)
         if grabber is None:
             raise ValueError("No grabber found for the given URL.")
 

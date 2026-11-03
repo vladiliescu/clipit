@@ -1,6 +1,41 @@
+import json
 import shutil
 import subprocess
+import sys
 from pathlib import Path
+
+
+def test_cli_preserves_saved_page_in_locked_environment(page_server, tmp_path):
+    expected = json.loads((Path(__file__).parent / "fixtures" / "example-domain.json").read_text())["python"]
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "clipit.cli",
+            "--no-use-readability-js",
+            "--no-create-domain-subdir",
+            "--no-yaml-frontmatter",
+            "--no-include-title",
+            "-f",
+            "md",
+            "-f",
+            "html",
+            "-f",
+            "raw.html",
+            f"{page_server}/example-domain.html",
+        ],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+
+    assert proc.returncode == 0, f"STDOUT:\n{proc.stdout}\nSTDERR:\n{proc.stderr}"
+    assert (tmp_path / "Example Domain.md").read_text() == expected["md"]
+    assert (tmp_path / "Example Domain.html").read_text() == expected["html"]
+    assert (tmp_path / "Example Domain.raw.html").read_text() == (
+        Path(__file__).parent / "fixtures" / "example-domain.html"
+    ).read_text()
 
 
 def test_cli_generates_md_and_html_and_cleans_up():

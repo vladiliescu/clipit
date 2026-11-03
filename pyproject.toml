@@ -42,7 +42,7 @@ package = true
 [dependency-groups]
 # uv-only groups for local development; not published as pip extras
 dev = [
-    "pytest==9.0.2",
+    "pytest==9.0.3",
     "pytest-asyncio==1.3.0",
     "python-dotenv==1.2.2",
     "ruff>=0.16.6",
